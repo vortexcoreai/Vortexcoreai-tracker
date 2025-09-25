@@ -13,7 +13,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import data from './data.json'
 
 export default async function Dashboard() {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions) 
 
   if (!session) {
     redirect('/login')
@@ -31,10 +31,10 @@ export default async function Dashboard() {
       <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader />
-        <div>
+        {/* <div>
           <h1>Welcome {session.user.email}</h1>
           <p>Role: {session.user.role}</p>
-        </div>
+        </div> */}
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
