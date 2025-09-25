@@ -283,6 +283,8 @@ export interface UsersSelect<T extends boolean = true> {
 export interface AttendanceSelect<T extends boolean = true> {
   user?: T;
   date?: T;
+  clockIn?: T;
+  clockOut?: T;
   status?: T;
   updatedAt?: T;
   createdAt?: T;

@@ -1,22 +1,19 @@
-// import { headers as getHeaders } from 'next/headers.js'
-// import { getPayload } from 'payload'
-import React from 'react'
-import { Button } from '@/components/ui/button'
+// app/dashboard/page.tsx
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
+import { redirect } from "next/navigation"
 
-// import config from '@/payload.config'
-import './styles.css'
+export default async function Dashboard() {
+  const session = await getServerSession(authOptions)
 
-export default async function HomePage() {
-  // const headers = await getHeaders()
-  // const payloadConfig = await config
-  // const payload = await getPayload({ config: payloadConfig })
-  // const { user } = await payload.auth({ headers })
+  if (!session) {
+    redirect("/login")
+  }
 
   return (
-    <div className="bg-amber-400 text-rose-700 p-10">
-      {/* {!user && <h1 className="bg-amber-400 text-rose-700 p-10">Welcome to your new project.</h1>}
-      {user && <h1 className="bg-amber-400 text-rose-700 p-10">Welcome back, {user.email}</h1>} */}
-      <Button variant="secondary" size="lg">Login</Button>
+    <div>
+      <h1>Welcome {session.user.email}</h1>
+      <p>Role: {session.user.role}</p>
     </div>
   )
 }

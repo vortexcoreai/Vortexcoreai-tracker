@@ -1,22 +1,17 @@
-import { CollectionConfig } from "payload/types";
+import { CollectionConfig } from 'payload/types';
 
 async function getTeamEmployeeIds(req: any, team: any) {
   if (!team) return [];
 
-  // normalize: team could be ID, object, or array
-  const teamId =
-    typeof team === "object"
-      ? team.id || team.value || null
-      : team;
-
+  const teamId = typeof team === 'object' ? team.id || team.value || null : team;
   if (!teamId) return [];
 
   const employees = await req.payload.find({
-    collection: "users",
+    collection: 'users',
     where: {
       and: [
         { team: { equals: teamId } },
-        { role: { equals: "employee" } },
+        { role: { equals: 'employee' } },
       ],
     },
     limit: 1000,
@@ -26,94 +21,99 @@ async function getTeamEmployeeIds(req: any, team: any) {
 }
 
 export const Attendance: CollectionConfig = {
-  slug: "attendance",
+  slug: 'attendance',
   admin: {
-    useAsTitle: "date",
+    useAsTitle: 'date',
   },
   fields: [
     {
-      name: "user",
-      type: "relationship",
-      relationTo: "users",
+      name: 'user',
+      type: 'relationship',
+      relationTo: 'users',
+      required: true,
+      admin: {
+        readOnly: true, // employees cannot change this
+      },
+    },
+    {
+      name: 'date',
+      type: 'date',
       required: true,
     },
     {
-      name: "date",
-      type: "date",
+      name: 'clockIn',
+      type: 'time',
       required: true,
     },
     {
-      name: "status",
-      type: "select",
-      options: ["present", "absent", "half-day", "leave"],
+      name: 'clockOut',
+      type: 'time',
+      required: false,
+    },
+    {
+      name: 'status',
+      type: 'select',
+      options: ['present', 'absent', 'half-day', 'leave'],
       required: true,
     },
   ],
+  hooks: {
+    beforeChange: [
+      async ({ data, req }) => {
+        const user = req.user;
+        if (user && user.role === 'employee') {
+          data.user = user.id; // auto-assign logged-in employee
+        }
+        return data;
+      },
+    ],
+  },
   access: {
+    // READ access
     read: async ({ req }) => {
       const user = req.user;
       if (!user) return false;
 
-      if (user.role === "employee") {
-        return { user: { equals: user.id } };
+      if (user.role === 'employee') {
+        return { user: { equals: user.id } }; // only own records
       }
 
-      if (user.role === "team_leader") {
+      if (user.role === 'team_leader') {
         const teamEmployees = await getTeamEmployeeIds(req, user.team);
-        return {
-          or: [
-            { user: { equals: user.id } }, // own attendance
-            { user: { in: teamEmployees } }, // employees in same team
-          ],
-        };
+        return { user: { in: teamEmployees } }; // only team members
       }
 
-      if (user.role === "hr" || user.role === "admin") return true;
+      if (user.role === 'admin') return true; // all records
 
       return false;
     },
 
-    create: async ({ req, data }) => {
+    // CREATE access
+    create: ({ req }) => {
       const user = req.user;
       if (!user) return false;
 
-      if (user.role === "employee") {
-        return data?.user === user.id;
-      }
-
-      if (user.role === "team_leader") {
-        const teamEmployees = await getTeamEmployeeIds(req, user.team);
-        return data?.user === user.id || teamEmployees.includes(data?.user);
-      }
-
-      if (user.role === "hr" || user.role === "admin") return true;
-
-      return false;
+      return ['employee', 'admin'].includes(user.role); // only employee or admin
     },
 
+    // UPDATE access
     update: async ({ req, doc }) => {
       const user = req.user;
       if (!user || !doc) return false;
 
-      if (user.role === "employee") {
-        return false;
-      }
-
-      if (user.role === "team_leader") {
-        if (doc.user === user.id) return false; // cannot update self
-        const teamEmployees = await getTeamEmployeeIds(req, user.team);
-        return teamEmployees.includes(doc.user as string);
-      }
-
-      if (user.role === "hr" || user.role === "admin") return true;
+      if (user.role === 'employee') return false; // cannot update
+      if (user.role === 'team_leader') return false; // read-only
+      if (user.role === 'admin') return true; // admin full access
 
       return false;
     },
 
+    // DELETE access
     delete: ({ req }) => {
       const user = req.user;
       if (!user) return false;
-      return user.role === "admin";
+
+      return user.role === 'admin'; // only admin
     },
   },
 };
