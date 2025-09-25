@@ -21,13 +21,7 @@ export default function LoginPage() {
         </div>
       </div>
       <div className="relative hidden bg-muted lg:block">
-        <Image
-          src="/placeholder.svg"
-          width={800}
-          height={600}
-          alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        />
+        <Image src="/placeholder.svg" width={800} height={600} alt="Image" className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" />
       </div>
     </div>
   )

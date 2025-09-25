@@ -11,7 +11,6 @@ import { Attendance } from './collections/Attendance'
 import { Teams } from './collections/Teams'
 import { Leaves } from './collections/Leaves'
 
-
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -34,7 +33,5 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [
-    payloadCloudPlugin(),
-  ],
+  plugins: [payloadCloudPlugin()],
 })

@@ -19,8 +19,7 @@ export const Users: CollectionConfig = {
 
       // DONE
       if (user.role === 'team_leader') {
-        const teamId =
-          user.team && typeof user.team === 'object' ? user.team.id || user.team : user.team
+        const teamId = user.team && typeof user.team === 'object' ? user.team.id || user.team : user.team
 
         if (!teamId) {
           return { id: { equals: user.id } }
