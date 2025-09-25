@@ -1,5 +1,6 @@
 import './styles.css'
 import { SessionProviderWrapper } from '@/components/providers/SessionProviderWrapper'
+import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata = {
   description: 'Vortex core ai',
@@ -10,7 +11,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <SessionProviderWrapper>{children}</SessionProviderWrapper>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SessionProviderWrapper>{children}</SessionProviderWrapper>
+        </ThemeProvider>
       </body>
     </html>
   )
