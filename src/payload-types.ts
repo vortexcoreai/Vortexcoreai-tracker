@@ -134,8 +134,8 @@ export interface User {
   phone?: string | null;
   address?: string | null;
   employeeId?: string | null;
-  designation: number | Designation;
-  department: number | Department;
+  designation?: (number | null) | Designation;
+  department?: (number | null) | Department;
   dateOfJoining?: string | null;
   status?: ('active' | 'inactive' | 'terminated') | null;
   updatedAt: string;

@@ -110,13 +110,13 @@ export const Users: CollectionConfig = {
       name: 'designation',
       type: 'relationship',
       relationTo: 'designations',
-      required: true,
+      required: false,
     },
     {
       name: 'department',
       type: 'relationship',
       relationTo: 'departments',
-      required: true,
+      required: false,
     },
     {
       name: 'dateOfJoining',
