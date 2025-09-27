@@ -17,10 +17,7 @@ export const Users: CollectionConfig = {
       }
 
       if (user.role === 'team_leader') {
-        const teamId =
-          user.team && typeof user.team === 'object'
-            ? user.team.id || user.team
-            : user.team
+        const teamId = user.team && typeof user.team === 'object' ? user.team.id || user.team : user.team
 
         if (!teamId) return { id: { equals: user.id } }
 
@@ -28,10 +25,7 @@ export const Users: CollectionConfig = {
           and: [
             { role: { not_in: ['admin', 'hr'] } },
             {
-              or: [
-                { id: { equals: user.id } },
-                { team: { equals: teamId } },
-              ],
+              or: [{ id: { equals: user.id } }, { team: { equals: teamId } }],
             },
           ],
         }
@@ -93,8 +87,7 @@ export const Users: CollectionConfig = {
       type: 'relationship',
       relationTo: 'teams',
       admin: {
-        condition: (data) =>
-          data.role === 'employee' || data.role === 'team_leader',
+        condition: (data) => data.role === 'employee' || data.role === 'team_leader',
       },
     },
 
