@@ -71,6 +71,8 @@ export interface Config {
     attendance: Attendance;
     teams: Team;
     leaves: Leaf;
+    departments: Department;
+    designations: Designation;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -81,6 +83,8 @@ export interface Config {
     attendance: AttendanceSelect<false> | AttendanceSelect<true>;
     teams: TeamsSelect<false> | TeamsSelect<true>;
     leaves: LeavesSelect<false> | LeavesSelect<true>;
+    departments: DepartmentsSelect<false> | DepartmentsSelect<true>;
+    designations: DesignationsSelect<false> | DesignationsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -130,8 +134,8 @@ export interface User {
   phone?: string | null;
   address?: string | null;
   employeeId?: string | null;
-  designation?: string | null;
-  department?: string | null;
+  designation: number | Designation;
+  department: number | Department;
   dateOfJoining?: string | null;
   status?: ('active' | 'inactive' | 'terminated') | null;
   updatedAt: string;
@@ -161,6 +165,26 @@ export interface Team {
   name: string;
   teamLeader: number | User;
   members?: (number | User)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "designations".
+ */
+export interface Designation {
+  id: number;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "departments".
+ */
+export interface Department {
+  id: number;
+  name: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -213,6 +237,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'leaves';
         value: number | Leaf;
+      } | null)
+    | ({
+        relationTo: 'departments';
+        value: number | Department;
+      } | null)
+    | ({
+        relationTo: 'designations';
+        value: number | Designation;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -325,6 +357,24 @@ export interface LeavesSelect<T extends boolean = true> {
   reason?: T;
   status?: T;
   approvedBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "departments_select".
+ */
+export interface DepartmentsSelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "designations_select".
+ */
+export interface DesignationsSelect<T extends boolean = true> {
+  title?: T;
   updatedAt?: T;
   createdAt?: T;
 }

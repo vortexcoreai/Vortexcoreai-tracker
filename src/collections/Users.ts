@@ -100,7 +100,7 @@ export const Users: CollectionConfig = {
 
     // ----- Personal Info -----
     { name: 'firstName', type: 'text', required: true },
-    { name: 'lastName', type: 'text', required: true },
+    { name: 'lastName', type: 'text', required: false },
     {
       name: 'email',
       type: 'email',
@@ -128,7 +128,7 @@ export const Users: CollectionConfig = {
     {
       name: 'dateOfJoining',
       type: 'date',
-      required: true,
+      required: false,
     },
     {
       name: 'status',
