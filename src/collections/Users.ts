@@ -6,49 +6,46 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
   },
+
   access: {
-    // DONE
     read: ({ req }) => {
       const user = req.user
       if (!user) return false
 
-      // DONE
       if (user.role === 'employee') {
         return { id: { equals: user.id } }
       }
 
-      // DONE
       if (user.role === 'team_leader') {
-        const teamId = user.team && typeof user.team === 'object' ? user.team.id || user.team : user.team
+        const teamId =
+          user.team && typeof user.team === 'object'
+            ? user.team.id || user.team
+            : user.team
 
-        if (!teamId) {
-          return { id: { equals: user.id } }
-        }
+        if (!teamId) return { id: { equals: user.id } }
 
         return {
           and: [
             { role: { not_in: ['admin', 'hr'] } },
             {
-              or: [{ id: { equals: user.id } }, { team: { equals: teamId } }],
+              or: [
+                { id: { equals: user.id } },
+                { team: { equals: teamId } },
+              ],
             },
           ],
         }
       }
 
-      // DONE
       if (user.role === 'hr') {
         return { role: { not_equals: 'admin' } }
       }
 
-      // DONE
-      if (user.role === 'admin') {
-        return true
-      }
+      if (user.role === 'admin') return true
 
       return false
     },
 
-    // DONE
     update: ({ req, doc, data }) => {
       const user = req.user
       if (!user) return false
@@ -57,17 +54,14 @@ export const Users: CollectionConfig = {
       if (user.role === 'team_leader') return false
 
       if (user.role === 'hr') {
-        if (doc?.role === 'admin') return false
-        if (data?.role === 'admin') return false
+        if (doc?.role === 'admin' || data?.role === 'admin') return false
         return true
       }
 
       if (user.role === 'admin') return true
-
       return false
     },
 
-    // DONE
     create: ({ req, data }) => {
       const user = req.user
       if (!user) return false
@@ -78,7 +72,6 @@ export const Users: CollectionConfig = {
       return false
     },
 
-    // DONE
     delete: ({ req }) => {
       const user = req.user
       if (!user) return false
@@ -87,6 +80,7 @@ export const Users: CollectionConfig = {
   },
 
   fields: [
+    // ----- Core Role + Team -----
     {
       name: 'role',
       type: 'select',
@@ -98,24 +92,49 @@ export const Users: CollectionConfig = {
       name: 'team',
       type: 'relationship',
       relationTo: 'teams',
+      admin: {
+        condition: (data) =>
+          data.role === 'employee' || data.role === 'team_leader',
+      },
     },
-    {
-      name: 'firstName',
-      type: 'text',
-    },
-    {
-      name: 'lastName',
-      type: 'text',
-    },
+
+    // ----- Personal Info -----
+    { name: 'firstName', type: 'text', required: true },
+    { name: 'lastName', type: 'text', required: true },
     {
       name: 'email',
       type: 'email',
       required: true,
+      unique: true,
+    },
+    { name: 'password', type: 'password', required: true },
+    { name: 'phone', type: 'text' },
+    { name: 'address', type: 'text' },
+
+    // ----- Job Info -----
+    { name: 'employeeId', type: 'text', unique: true },
+    {
+      name: 'designation',
+      type: 'relationship',
+      relationTo: 'designations',
+      required: true,
     },
     {
-      name: 'password',
-      type: 'password',
+      name: 'department',
+      type: 'relationship',
+      relationTo: 'departments',
       required: true,
+    },
+    {
+      name: 'dateOfJoining',
+      type: 'date',
+      required: true,
+    },
+    {
+      name: 'status',
+      type: 'select',
+      options: ['active', 'inactive', 'terminated'],
+      defaultValue: 'active',
     },
   ],
 }
