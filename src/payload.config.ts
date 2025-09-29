@@ -1,9 +1,5 @@
 import path from 'path'
 
-// import { rbac } from './rbac/rbac'
-// import simpleRBAC from '@nouance/payload-simple-rbac'
-// import payloadSimpleRBAC from '@nouance/payload-simple-rbac'
-
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 
@@ -35,15 +31,18 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+
   // db: postgresAdapter({
   //   pool: {
   //     connectionString: process.env.DATABASE_URI || '',
   //   },
   // }),
+
   db: sqliteAdapter({
     client: {
       url: `file:${path.resolve(dirname, 'dev.db')}`,
     },
   }),
+
   plugins: [payloadCloudPlugin()],
 })
