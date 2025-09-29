@@ -1,4 +1,4 @@
-import { CollectionConfig } from 'payload/types'
+import { CollectionConfig } from 'payload'
 
 async function getTeamEmployeeIds(req: any, team: any) {
   if (!team) return []
@@ -28,9 +28,7 @@ export const Attendance: CollectionConfig = {
       type: 'relationship',
       relationTo: 'users',
       required: true,
-      admin: {
-        readOnly: true, // employees cannot change this
-      },
+      admin: { readOnly: true }, // employees cannot change this
     },
     {
       name: 'date',
@@ -39,13 +37,19 @@ export const Attendance: CollectionConfig = {
     },
     {
       name: 'clockIn',
-      type: 'time',
+      type: 'date',
       required: true,
+      admin: {
+        date: { pickerAppearance: 'timeOnly' },
+      },
     },
     {
       name: 'clockOut',
-      type: 'time',
+      type: 'date',
       required: false,
+      admin: {
+        date: { pickerAppearance: 'timeOnly' },
+      },
     },
     {
       name: 'status',
@@ -80,7 +84,7 @@ export const Attendance: CollectionConfig = {
         return { user: { in: teamEmployees } } // only team members
       }
 
-      if (user.role === 'admin') return true // all records
+      if (user.role === 'admin') return true // full access
 
       return false
     },
@@ -89,28 +93,35 @@ export const Attendance: CollectionConfig = {
     create: ({ req }) => {
       const user = req.user
       if (!user) return false
-
-      return ['employee', 'admin'].includes(user.role) // only employee or admin
+      return ['employee', 'admin'].includes(user.role)
     },
 
     // UPDATE access
-    update: async ({ req, doc }) => {
+    update: async ({ req, id }) => {
       const user = req.user
-      if (!user || !doc) return false
+      if (!user) return false
+
+      if (!id) {
+        // no document id provided, deny update
+        return false
+      }
+
+      const attendanceDoc = await req.payload.findByID({
+        collection: 'attendance',
+        id: String(id), // make sure it's a string
+      })
 
       if (user.role === 'employee') return false // cannot update
       if (user.role === 'team_leader') return false // read-only
-      if (user.role === 'admin') return true // admin full access
+      if (user.role === 'admin') return true // full access
 
       return false
     },
-
     // DELETE access
     delete: ({ req }) => {
       const user = req.user
       if (!user) return false
-
-      return user.role === 'admin' // only admin
+      return user.role === 'admin'
     },
   },
 }

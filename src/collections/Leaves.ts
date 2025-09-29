@@ -1,4 +1,4 @@
-import { CollectionConfig } from 'payload/types'
+import { CollectionConfig } from 'payload'
 import payload from 'payload'
 
 export const Leaves: CollectionConfig = {

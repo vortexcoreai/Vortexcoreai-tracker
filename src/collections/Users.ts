@@ -1,4 +1,4 @@
-import { CollectionConfig } from 'payload/types'
+import { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -131,3 +131,71 @@ export const Users: CollectionConfig = {
     },
   ],
 }
+// import { CollectionConfig } from 'payload'
+
+// export const Users: CollectionConfig = {
+//   slug: 'users',
+//   auth: true,
+//   admin: {
+//     useAsTitle: 'email',
+//   },
+
+//   fields: [
+//     // ----- Core Role + Team -----
+//     {
+//       name: 'role',
+//       type: 'select',
+//       required: true,
+//       options: ['admin', 'hr', 'team_leader', 'employee'],
+//       defaultValue: 'employee',
+//     },
+//     {
+//       name: 'team',
+//       type: 'relationship',
+//       relationTo: 'teams',
+//       admin: {
+//         condition: (data) =>
+//           data.role === 'employee' || data.role === 'team_leader',
+//       },
+//     },
+
+//     // ----- Personal Info -----
+//     { name: 'firstName', type: 'text', required: true },
+//     { name: 'lastName', type: 'text', required: false },
+//     {
+//       name: 'email',
+//       type: 'email',
+//       required: true,
+//       unique: true,
+//     },
+//     { name: 'password', type: 'password', required: true },
+//     { name: 'phone', type: 'text' },
+//     { name: 'address', type: 'text' },
+
+//     // ----- Job Info -----
+//     { name: 'employeeId', type: 'text', unique: true },
+//     {
+//       name: 'designation',
+//       type: 'relationship',
+//       relationTo: 'designations',
+//       required: false,
+//     },
+//     {
+//       name: 'department',
+//       type: 'relationship',
+//       relationTo: 'departments',
+//       required: false,
+//     },
+//     {
+//       name: 'dateOfJoining',
+//       type: 'date',
+//       required: false,
+//     },
+//     {
+//       name: 'status',
+//       type: 'select',
+//       options: ['active', 'inactive', 'terminated'],
+//       defaultValue: 'active',
+//     },
+//   ],
+// }

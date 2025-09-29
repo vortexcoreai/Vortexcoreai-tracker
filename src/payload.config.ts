@@ -1,10 +1,15 @@
+// import sharp from 'sharp'
+import path from 'path'
+
+// import { RBAC } from './rbac/rbac'
+
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
+
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
-import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Attendance } from './collections/Attendance'
@@ -29,11 +34,16 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: postgresAdapter({
-    pool: {
-      connectionString: process.env.DATABASE_URI || '',
+  // db: postgresAdapter({
+  //   pool: {
+  //     connectionString: process.env.DATABASE_URI || '',
+  //   },
+  // }),
+  db: sqliteAdapter({
+    client: {
+      url: `file:${path.resolve(dirname, 'dev.db')}`,
     },
   }),
-  sharp,
+  // sharp,
   plugins: [payloadCloudPlugin()],
 })

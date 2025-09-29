@@ -196,6 +196,8 @@ export interface Attendance {
   id: number;
   user: number | User;
   date: string;
+  clockIn: string;
+  clockOut?: string | null;
   status: 'present' | 'absent' | 'half-day' | 'leave';
   updatedAt: string;
   createdAt: string;

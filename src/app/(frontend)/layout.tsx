@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import './styles.css'
 import './polyfills'
 import { SessionProviderWrapper } from '@/components/providers/SessionProviderWrapper'
