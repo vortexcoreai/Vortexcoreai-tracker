@@ -21,6 +21,7 @@
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@nouance/payload-simple-rbac": "^0.2.0",
     "@payloadcms/db-postgres": "3.57.0",
     "@payloadcms/db-sqlite": "^3.57.0",
     "@payloadcms/next": "3.57.0",

@@ -1,7 +1,8 @@
-// import sharp from 'sharp'
 import path from 'path'
 
-// import { RBAC } from './rbac/rbac'
+// import { rbac } from './rbac/rbac'
+// import simpleRBAC from '@nouance/payload-simple-rbac'
+// import payloadSimpleRBAC from '@nouance/payload-simple-rbac'
 
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
@@ -17,6 +18,8 @@ import { Teams } from './collections/Teams'
 import { Leaves } from './collections/Leaves'
 import { Departments } from './collections/departments'
 import { Designations } from './collections/designations'
+
+
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -44,6 +47,5 @@ export default buildConfig({
       url: `file:${path.resolve(dirname, 'dev.db')}`,
     },
   }),
-  // sharp,
   plugins: [payloadCloudPlugin()],
 })

@@ -28,7 +28,7 @@ export const Attendance: CollectionConfig = {
       type: 'relationship',
       relationTo: 'users',
       required: true,
-      admin: { readOnly: true }, // employees cannot change this
+      admin: { readOnly: true },
     },
     {
       name: 'date',
