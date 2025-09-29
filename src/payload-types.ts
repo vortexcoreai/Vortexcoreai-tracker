@@ -299,7 +299,6 @@ export interface UsersSelect<T extends boolean = true> {
   team?: T;
   firstName?: T;
   lastName?: T;
-  password?: T;
   phone?: T;
   address?: T;
   employeeId?: T;

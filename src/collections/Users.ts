@@ -2,7 +2,7 @@ import { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
   slug: 'users',
-  auth: true,
+  auth: true, 
   admin: {
     useAsTitle: 'email',
   },
@@ -100,7 +100,7 @@ export const Users: CollectionConfig = {
       required: true,
       unique: true,
     },
-    { name: 'password', type: 'password', required: true },
+    // { name: 'password', type: 'password', required: true },
     { name: 'phone', type: 'text' },
     { name: 'address', type: 'text' },
 

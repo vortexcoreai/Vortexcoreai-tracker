@@ -2,8 +2,13 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Edit, Settings, Mail, Star, Users } from 'lucide-react'
+import { apiFetch } from '@/lib/api'
 
-export default function Page() {
+export default async function Page() {
+  const data = await apiFetch('/api/users/me')
+  const user = data.user
+  console.log(user)
+
   return (
     <div id="account-container">
       <div className="container mx-auto px-4 py-6 md:px-6 2xl:max-w-[1400px]">
@@ -32,9 +37,11 @@ export default function Page() {
                   <span className="relative size-20 shrink-0 overflow-hidden rounded-full">
                     <Image className="aspect-square size-full" alt="User Avatar" src="https://github.com/shadcn.png" width={80} height={80} />
                   </span>
-                  <h2 className="mt-4 text-lg font-semibold">John Doe</h2>
-                  <p className="text-sm text-muted-foreground">Product Designer</p>
-                  <span className="mt-2 w-fit rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">Pro Member</span>
+                  <h2 className="mt-4 text-lg font-semibold">
+                    {user.firstName} {user.lastName}
+                  </h2>
+                  <p className="text-sm text-muted-foreground">{user.role}</p>
+                  <span className="mt-2 w-fit rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">{user.designation.name}</span>
                   <Button className="mt-4 w-full">
                     <Mail className="mr-2 size-4" />
                     Message
@@ -44,16 +51,28 @@ export default function Page() {
                 {/* Info Section */}
                 <div className="mt-6 space-y-4 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Member since</span>
-                    <span>Jan 2024</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Last active</span>
-                    <span>2 hours ago</span>
+                    <span className="text-muted-foreground">Email</span>
+                    <span>{user.email}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Role</span>
-                    <span>Admin</span>
+                    <span>{user.role}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Phone</span>
+                    <span>{user.phone}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Address</span>
+                    <span>{user.address}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Department</span>
+                    <span>{user.department.name}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Designation</span>
+                    <span>{user.designation.title}</span>
                   </div>
                 </div>
               </CardContent>
@@ -62,12 +81,23 @@ export default function Page() {
 
           {/* Main Content */}
           <div className="space-y-6 md:col-span-3">
-            {/* Stats */}
             <div className="grid gap-4 sm:grid-cols-3">
               {[
-                { icon: <Star className="size-5 text-primary" />, value: '128', label: 'Projects Completed' },
-                { icon: <Users className="size-5 text-primary" />, value: '8.5k', label: 'Team Members' },
-                { icon: <Star className="size-5 text-primary" />, value: '99%', label: 'Satisfaction Rate' },
+                {
+                  icon: <Star className="size-5 text-primary" />,
+                  value: 'DOJ',
+                  label: user.dateOfJoining,
+                },
+                {
+                  icon: <Users className="size-5 text-primary" />,
+                  value: '8.5k',
+                  label: 'Team Members',
+                },
+                {
+                  icon: <Star className="size-5 text-primary" />,
+                  value: '99%',
+                  label: 'Satisfaction Rate',
+                },
               ].map((stat, i) => (
                 <Card key={i}>
                   <CardContent className="flex items-center gap-4 p-6">
