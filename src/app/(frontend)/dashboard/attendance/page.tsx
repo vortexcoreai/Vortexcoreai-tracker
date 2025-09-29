@@ -2,7 +2,6 @@ import { apiFetch } from '@/lib/api'
 import AttendanceTable from '@/components/attendance-table'
 
 export default async function Page({ searchParams }) {
-  console.log(searchParams)
   const year = Number(searchParams.year) || new Date().getFullYear()
   const month = Number(searchParams.month) || new Date().getMonth() + 1
 
