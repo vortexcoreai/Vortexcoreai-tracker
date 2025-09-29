@@ -19,8 +19,6 @@ import { Leaves } from './collections/Leaves'
 import { Departments } from './collections/departments'
 import { Designations } from './collections/designations'
 
-
-
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
