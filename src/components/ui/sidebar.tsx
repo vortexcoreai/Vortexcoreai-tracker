@@ -331,7 +331,7 @@ function SidebarMenuButton({
   const Comp = asChild ? Slot : 'button'
   const { isMobile, state } = useSidebar()
 
-  const button = <Comp data-slot="sidebar-menu-button" data-sidebar="menu-button" data-size={size} data-active={isActive} className={cn(sidebarMenuButtonVariants({ variant, size }), className)} {...props} />
+  const button = <Comp data-slot="sidebar-menu-button fd" data-sidebar="menu-button" data-size={size} data-active={isActive} className={cn(sidebarMenuButtonVariants({ variant, size }), className)} {...props} />
 
   if (!tooltip) {
     return button

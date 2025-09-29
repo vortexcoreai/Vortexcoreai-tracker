@@ -54,70 +54,104 @@ export const Attendance: CollectionConfig = {
     {
       name: 'status',
       type: 'select',
-      options: ['present', 'absent', 'half-day', 'leave'],
+      options: [
+        { label: 'Present', value: 'present' },
+        { label: 'Absent', value: 'absent' },
+        { label: 'Half Day', value: 'half-day' },
+        { label: 'Leave', value: 'leave' },
+      ],
       required: true,
+    },
+    {
+      name: 'workDuration',
+      type: 'number',
+      required: false,
+      admin: { description: 'Total hours worked (auto or manual)' },
+    },
+    {
+      name: 'dwr',
+      type: 'textarea',
+      required: false,
+      admin: { description: 'Daily Work Report' },
+    },
+    {
+      name: 'overtimeHours',
+      type: 'number',
+      required: false,
+      admin: { description: 'Overtime in hours' },
+    },
+    {
+      name: 'remarks',
+      type: 'textarea',
+      required: false,
+      admin: { description: 'Manager or employee notes' },
+    },
+    {
+      name: 'approvedBy',
+      type: 'relationship',
+      relationTo: 'users',
+      required: false,
+      admin: { description: 'Manager who approved this record' },
     },
   ],
   hooks: {
     beforeChange: [
       async ({ data, req }) => {
         const user = req.user
-        if (user && user.role === 'employee') {
-          data.user = user.id // auto-assign logged-in employee
+        if (!user) return data
+        if (user.role === 'employee') {
+          data.user = user.id
         }
+        if (user.role === 'admin' && !data.user) {
+          throw new Error('Admin must specify a user when creating attendance.')
+        }
+
         return data
       },
     ],
   },
   access: {
-    // READ access
     read: async ({ req }) => {
       const user = req.user
       if (!user) return false
 
       if (user.role === 'employee') {
-        return { user: { equals: user.id } } // only own records
+        return { user: { equals: user.id } }
       }
 
       if (user.role === 'team_leader') {
         const teamEmployees = await getTeamEmployeeIds(req, user.team)
-        return { user: { in: teamEmployees } } // only team members
+        return { user: { in: teamEmployees } }
       }
 
-      if (user.role === 'admin') return true // full access
+      if (user.role === 'admin') return true
 
       return false
     },
-
-    // CREATE access
     create: ({ req }) => {
       const user = req.user
       if (!user) return false
       return ['employee', 'admin'].includes(user.role)
     },
-
-    // UPDATE access
     update: async ({ req, id }) => {
       const user = req.user
       if (!user) return false
 
       if (!id) {
-        // no document id provided, deny update
         return false
       }
 
       const attendanceDoc = await req.payload.findByID({
         collection: 'attendance',
-        id: String(id), // make sure it's a string
+        id: String(id),
       })
 
-      if (user.role === 'employee') return false // cannot update
-      if (user.role === 'team_leader') return false // read-only
-      if (user.role === 'admin') return true // full access
+      if (user.role === 'employee') return false
+      if (user.role === 'team_leader') return false
+      if (user.role === 'admin') return true
 
       return false
     },
-    // DELETE access
     delete: ({ req }) => {
       const user = req.user
       if (!user) return false

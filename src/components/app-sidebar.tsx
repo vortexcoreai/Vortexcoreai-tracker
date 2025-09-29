@@ -11,15 +11,15 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import Link from 'next/link'
 
 const data = {
-  user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
+  // user: {
+  //   name: 'shadcn',
+  //   email: 'm@example.com',
+  //   avatar: '/avatars/shadcn.jpg',
+  // },
   navMain: [
     {
-      title: 'Dashboard',
-      url: '#',
+      title: 'Attendance',
+      url: '/dashboard/attendance',
       icon: LayoutDashboardIcon,
     },
     {

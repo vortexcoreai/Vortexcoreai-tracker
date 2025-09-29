@@ -7,7 +7,7 @@ import { apiFetch } from '@/lib/api'
 export default async function Page() {
   const data = await apiFetch('/api/users/me')
   const user = data.user
-  console.log(user)
+  // console.log(user)
 
   return (
     <div id="account-container">
