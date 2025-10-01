@@ -1,7 +1,9 @@
+'use client'
+
 import { useSession } from 'next-auth/react'
 
 export function useApiFetch() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
 
   async function apiFetch(path: string, options: RequestInit = {}) {
     if (!session?.user?.token) {
@@ -15,6 +17,7 @@ export function useApiFetch() {
         Authorization: `JWT ${session.user.token}`,
         'Content-Type': 'application/json',
       },
+      cache: 'no-store',
     })
 
     if (!res.ok) {
@@ -24,5 +27,5 @@ export function useApiFetch() {
     return res.json()
   }
 
-  return { apiFetch }
+  return { apiFetch, session, status }
 }
