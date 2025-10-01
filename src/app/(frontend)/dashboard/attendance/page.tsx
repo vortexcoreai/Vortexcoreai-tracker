@@ -1,12 +1,11 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
-import { clientApiFetch } from '@/lib/api-client'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
-
+import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
+import { clientApiFetch } from '@/lib/api-client'
 import { AttendanceTable } from '@/components/attendance-table'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, ColumnsIcon } from 'lucide-react'
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Tabs } from '@/components/ui/tabs'
