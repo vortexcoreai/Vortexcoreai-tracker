@@ -6,5 +6,9 @@ export default async function Page({ searchParams }) {
   const month = Number(searchParams.month) || new Date().getMonth() + 1
 
   const data = await apiFetch(`/api/attendance?where[date][greater_than_equal]=${year}-${month}-01&where[date][less_than_equal]=${year}-${month}-31&limit=100&sort=date`)
-  return <AttendanceTable initialData={data.docs || []} />
+  return (
+    <>
+      <AttendanceTable initialData={data.docs || []} />
+    </>
+  )
 }

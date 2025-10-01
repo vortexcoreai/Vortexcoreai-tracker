@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export default function AttendanceTable({ initialData }) {
   const [data, setData] = useState(initialData)
@@ -9,6 +10,21 @@ export default function AttendanceTable({ initialData }) {
 
   return (
     <div className="w-full overflow-hidden rounded-md border">
+      <Select>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Select a fruit" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Fruits</SelectLabel>
+            <SelectItem value="apple">Apple</SelectItem>
+            <SelectItem value="banana">Banana</SelectItem>
+            <SelectItem value="blueberry">Blueberry</SelectItem>
+            <SelectItem value="grapes">Grapes</SelectItem>
+            <SelectItem value="pineapple">Pineapple</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
       <Table>
         <TableHeader>
           <TableRow>
@@ -19,8 +35,7 @@ export default function AttendanceTable({ initialData }) {
             <TableHead>DWR</TableHead>
             <TableHead>Work Duration</TableHead>
             <TableHead>Overtime</TableHead>
-            {/* <TableHead>Remarks</TableHead> */}
-            {/* <TableHead>Approved By</TableHead> */}
+
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -40,8 +55,7 @@ export default function AttendanceTable({ initialData }) {
                 <TableCell>{item.dwr || '-'}</TableCell>
                 <TableCell>{item.workDuration || '-'}</TableCell>
                 <TableCell>{item.overtimeHours || '-'}</TableCell>
-                {/* <TableCell>{item.remarks || '-'}</TableCell> */}
-                {/* <TableCell>{item.approvedBy ? `${item.approvedBy.firstName} ${item.approvedBy.lastName}` : '-'}</TableCell> */}
+
               </TableRow>
             ))
           ) : (
