@@ -1,12 +1,17 @@
-import { ReactNode } from 'react'
+'use client'
 import './styles.css'
+import { ReactNode, useState } from 'react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionProviderWrapper } from '@/components/providers/SessionProviderWrapper'
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const [queryClient] = useState(() => new QueryClient())
   return (
     <html lang="en">
       <body>
-        <SessionProviderWrapper>{children}</SessionProviderWrapper>
+        <QueryClientProvider client={queryClient}>
+          <SessionProviderWrapper>{children}</SessionProviderWrapper>
+        </QueryClientProvider>
       </body>
     </html>
   )
