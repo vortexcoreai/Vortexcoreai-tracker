@@ -3,9 +3,13 @@
 import dayjs from 'dayjs'
 import { useState, useEffect } from 'react'
 import duration from 'dayjs/plugin/duration'
-import { Card } from '@/components/ui/card'
 import { apiFetchPost } from '@/lib/postApi'
 import { useMutation } from '@tanstack/react-query'
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 dayjs.extend(duration)
 
@@ -137,56 +141,74 @@ export default function TimeTracker() {
 
   return (
     <>
-      <Card className="@container/card">
-        <div className="p-3 py-2 rounded bg-accent/30 flex-1 flex flex-col justify-between text-sm font-medium uppercase relative z-20">
-          <div className="flex justify-between items-center">
-            <span className="opacity-50">{todayDay}</span>
-            <span>{todayDate}</span>
-          </div>
+      <div className="flex gap-4">
+        {/* Timer Card */}
+        <Card className="w-full mx-auto shadow-lg">
+          <CardHeader>
+            <CardTitle className="flex justify-between items-center">
+              <span>{todayDay}</span>
+              <span>{todayDate}</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center py-6 relative">
+            <div className="text-6xl font-extrabold tracking-tight">{formatTime(displayTime)}</div>
+            {isOnBreak && <p className="mt-2 text-sm text-red-600 font-medium uppercase tracking-wide">On Break</p>}
+          </CardContent>
+          <CardFooter className="flex flex-wrap justify-center gap-3">
+            <Button onClick={handleStartWork} disabled={isWorking} variant="default">
+              Start Work
+            </Button>
+            <Button onClick={handleStopWork} disabled={!isWorking} variant="destructive">
+              Stop Work
+            </Button>
+            <Button onClick={handleStartBreak} disabled={!isWorking || isOnBreak} variant="secondary">
+              Start Break
+            </Button>
+            <Button onClick={handleStopBreak} disabled={!isOnBreak} variant="outline">
+              Stop Break
+            </Button>
+          </CardFooter>
+        </Card>
 
-          <div className="text-center">
-            <div className="text-5xl font-display">{formatTime(displayTime)}</div>
-            {isOnBreak && <p className="text-sm text-red-500 mt-1">On Break</p>}
-          </div>
-        </div>
-      </Card>
-
-      <div className="p-6 space-y-4">
-        <h1 className="text-2xl font-bold">Employee Time Tracker</h1>
-
-        <div className="space-x-3">
-          <button onClick={handleStartWork} disabled={isWorking} className="px-4 py-2 bg-green-500 text-white rounded">
-            Start Work
-          </button>
-          <button onClick={handleStopWork} disabled={!isWorking} className="px-4 py-2 bg-red-500 text-white rounded">
-            Stop Work
-          </button>
-          <button onClick={handleStartBreak} disabled={!isWorking || isOnBreak} className="px-4 py-2 bg-yellow-500 text-white rounded">
-            Start Break
-          </button>
-          <button onClick={handleStopBreak} disabled={!isOnBreak} className="px-4 py-2 bg-blue-500 text-white rounded">
-            Stop Break
-          </button>
-        </div>
-
+        {/* DWR Section */}
         {isWorking && (
-          <div className="mt-4">
-            <label htmlFor="dwr" className="block font-medium mb-1">
-              Daily Work Report (DWR) *
-            </label>
-            <textarea id="dwr" value={dwr} onChange={(e) => setDwr(e.target.value)} className="w-full p-2 border rounded" rows={4} placeholder="Enter your daily work report..." required />
-          </div>
+          <Card className="w-full mx-auto shadow-md">
+            <CardHeader>
+              <CardTitle>Daily Work Report (DWR) *</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="dwr" className="text-sm font-medium">
+                  Enter your work report
+                </Label>
+                <Textarea id="dwr" value={dwr} onChange={(e) => setDwr(e.target.value)} placeholder="Describe what you worked on today..." className="resize-none" rows={4} required />
+              </div>
+            </CardContent>
+          </Card>
         )}
-        <div className="mt-4">
-          <h2 className="text-lg font-semibold">Break History ({breaks.length})</h2>
-          <ul className="list-disc pl-5">
-            {breaks.map((b, i) => (
-              <li key={i}>
-                {dayjs(b.start).format('HH:mm:ss')} - {b.end ? dayjs(b.end).format('HH:mm:ss') : 'Ongoing'} ({formatTime(((b.end ?? now) - b.start) / 1000)})
-              </li>
-            ))}
-          </ul>
-        </div>
+      </div>
+
+      <div className='flex'>
+        {/* Break History */}
+        <Card className="mt-6 min-w-[400px] shadow-sm">
+          <CardHeader>
+            <CardTitle>Break History ({breaks.length})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="max-h-60">
+              <ul className="list-disc space-y-1">
+                {breaks.map((b, i) => (
+                  <li key={i} className="flex justify-between text-sm">
+                    <span>
+                      {dayjs(b.start).format('HH:mm:ss')} - {b.end ? dayjs(b.end).format('HH:mm:ss') : 'Ongoing'}
+                    </span>
+                    <span className="ml-2 font-mono">{formatTime(((b.end ?? now) - b.start) / 1000)}</span>
+                  </li>
+                ))}
+              </ul>
+            </ScrollArea>
+          </CardContent>
+        </Card>
       </div>
     </>
   )

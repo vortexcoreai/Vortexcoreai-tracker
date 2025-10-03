@@ -28,7 +28,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
       if (res?.error) {
         alert(res.error || 'Login failed')
       } else {
-        router.push('/') // redirect on success
+        router.push('/dashboard') // redirect on success
       }
     } catch (err) {
       console.error(err)

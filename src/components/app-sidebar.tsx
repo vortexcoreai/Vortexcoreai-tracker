@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { ArrowUpCircleIcon, BarChartIcon, CameraIcon, DatabaseIcon, FileCodeIcon, FileTextIcon, FolderIcon, LayoutDashboardIcon, ListIcon, SettingsIcon, UsersIcon } from 'lucide-react'
+import { Timer, ArrowUpCircleIcon, BarChartIcon, CameraIcon, DatabaseIcon, FileCodeIcon, FileTextIcon, FolderIcon, LayoutDashboardIcon, ListIcon, SettingsIcon, UsersIcon } from 'lucide-react'
 
 import { NavDocuments } from '@/components/nav-documents'
 import { NavMain } from '@/components/nav-main'
@@ -11,21 +11,16 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import Link from 'next/link'
 
 const data = {
-  // user: {
-  //   name: 'shadcn',
-  //   email: 'm@example.com',
-  //   avatar: '/avatars/shadcn.jpg',
-  // },
   navMain: [
     {
       title: 'Attendance',
-      url: '/dashboard/attendance',
+      url: '/dashboard/attendance?year=2025&month=10',
       icon: LayoutDashboardIcon,
     },
     {
-      title: 'Lifecycle',
-      url: '#',
-      icon: ListIcon,
+      title: 'Timer',
+      url: '/dashboard/timer',
+      icon: Timer,
     },
     {
       title: 'Analytics',
