@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react'
 
 export async function clientApiFetch(path, token, options = {}) {
-  const res = await fetch(`http://localhost:3000/${path}`, {
+  const res = await fetch(`${process.env.PAYLOAD_URL}${path}`, {
     ...options,
     cache: 'no-store',
     headers: {

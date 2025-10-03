@@ -32,17 +32,17 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
 
-  // db: postgresAdapter({
-  //   pool: {
-  //     connectionString: process.env.DATABASE_URI || '',
-  //   },
-  // }),
-
-  db: sqliteAdapter({
-    client: {
-      url: `file:${path.resolve(dirname, 'dev.db')}`,
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URI || '',
     },
   }),
+
+  // db: sqliteAdapter({
+  //   client: {
+  //     url: `file:${path.resolve(dirname, 'dev.db')}`,
+  //   },
+  // }),
 
   plugins: [payloadCloudPlugin()],
 })
