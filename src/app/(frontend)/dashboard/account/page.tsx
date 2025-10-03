@@ -4,8 +4,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Edit, Settings, Mail, Star, Users } from 'lucide-react'
 import { apiFetch } from '@/lib/api'
 
-
-
 export default async function Page() {
   const data = await apiFetch('/api/users/me')
   const user = data.user
