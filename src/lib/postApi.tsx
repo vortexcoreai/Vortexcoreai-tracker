@@ -17,7 +17,7 @@ export async function apiFetchPost(path, data, options = {}) {
     throw new Error('Unauthorized: No token found')
   }
 
-  const res = await fetch(`http://localhost:3000/${path}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_URL}${path}`, {
     ...options,
     cache: 'no-store',
     method: 'POST',
