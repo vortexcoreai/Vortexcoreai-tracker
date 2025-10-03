@@ -188,7 +188,7 @@ export default function TimeTracker() {
         )}
       </div>
 
-      <div className='flex'>
+      <div className="flex">
         {/* Break History */}
         <Card className="mt-6 min-w-[400px] shadow-sm">
           <CardHeader>

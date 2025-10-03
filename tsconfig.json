@@ -24,6 +24,6 @@
     },
     "target": "ES2022"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "seed.ts"],
+  "include": ["next-auth.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "seed.ts"],
   "exclude": ["node_modules", "payload-types.ts"]
 }

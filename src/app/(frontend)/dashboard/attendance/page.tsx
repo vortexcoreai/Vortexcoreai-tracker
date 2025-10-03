@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { clientApiFetch } from '@/lib/api-client'
 import { AttendanceTable } from '@/components/attendance-table'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, ColumnsIcon } from 'lucide-react'
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Tabs } from '@/components/ui/tabs'
@@ -13,12 +13,13 @@ import { Tabs } from '@/components/ui/tabs'
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 export default function Page() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
+  const router = useRouter()
+
   const [data, setData] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   const searchParams = useSearchParams()
-  const router = useRouter()
   const pathname = usePathname()
 
   const year = Number(searchParams.get('year')) || new Date().getFullYear()
@@ -31,13 +32,15 @@ export default function Page() {
     router.push(`${pathname}?${params.toString()}`)
   }
 
-  const handlePrevYear = () => {
-    handleChange(month, year - 1)
-  }
+  const handlePrevYear = () => handleChange(month, year - 1)
+  const handleNextYear = () => handleChange(month, year + 1)
 
-  const handleNextYear = () => {
-    handleChange(month, year + 1)
-  }
+  // 🔑 Redirect if not logged in
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login') // 👈 change to your login route
+    }
+  }, [status, router])
 
   useEffect(() => {
     if (!session?.user?.token) return
@@ -56,6 +59,11 @@ export default function Page() {
 
     fetchData()
   }, [session?.user?.token, year, month])
+
+  // While checking session status, show loader
+  if (status === 'loading') {
+    return <p className="p-4">Checking authentication...</p>
+  }
 
   return (
     <Tabs className="flex w-full flex-col gap-6">
