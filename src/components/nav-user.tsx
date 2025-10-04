@@ -1,24 +1,18 @@
 'use client'
 
-import { BellIcon, CreditCardIcon, LogOutIcon, MoreVerticalIcon, UserCircleIcon } from 'lucide-react'
-
+import { MoreVerticalIcon, LogOutIcon, Settings } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
 
 import { useSession, signOut } from 'next-auth/react'
+import Link from 'next/link'
 
 export function NavUser() {
   const { isMobile } = useSidebar()
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
 
-  if (status === 'loading') {
-    return <p className="p-4 text-sm text-muted-foreground">Loading user...</p>
-  }
-
-  if (!session?.user) {
-    return <p className="p-4 text-sm text-muted-foreground">Not logged in</p>
-  }
+  if (!session?.user) return null
 
   const user = {
     name: session.user.email.split('@')[0],
@@ -43,6 +37,7 @@ export function NavUser() {
               <MoreVerticalIcon className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side={isMobile ? 'bottom' : 'right'} align="end" sideOffset={4}>
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
@@ -56,22 +51,16 @@ export function NavUser() {
                 </div>
               </div>
             </DropdownMenuLabel>
+
+            <Link href={'/dashboard/account'}>
+              <DropdownMenuItem>
+                <Settings />
+                Settings
+              </DropdownMenuItem>
+            </Link>
+
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <UserCircleIcon />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCardIcon />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+
             <DropdownMenuItem onClick={() => signOut()}>
               <LogOutIcon />
               Log out

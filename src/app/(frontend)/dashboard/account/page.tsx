@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Edit, Settings, Mail, Star, Users } from 'lucide-react'
 import { apiFetch } from '@/lib/api'
+import { ThemeChanger } from '@/components/themeChanger'
 
 export default async function Page() {
   const data = await apiFetch('/api/users/me')
@@ -24,6 +25,7 @@ export default async function Page() {
               <Settings className="w-4" />
               Settings
             </Button>
+            <ThemeChanger />
           </div>
         </div>
 

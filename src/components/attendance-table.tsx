@@ -6,10 +6,13 @@ import { CheckCircle2Icon, Eye, LoaderIcon, ChevronLeftIcon, ChevronRightIcon } 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Dialog } from '@radix-ui/react-dialog'
+import { CustomDialog } from './dialog'
 
 export function AttendanceTable({ initialData }) {
-  const [data, setData] = useState(initialData)
+  const [data, setData] = useState([...initialData].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()))
   const [loading, setLoading] = useState(false)
+  console.log(data)
 
   return (
     <>
@@ -53,13 +56,9 @@ export function AttendanceTable({ initialData }) {
                 </TableCell>
                 <TableCell>{row.reviewer || '-'}</TableCell>
                 <TableCell>
-                  {row.dwr ? (
-                    <Button variant="ghost" size="icon" className="flex size-8 text-muted-foreground">
-                      <Eye />
-                    </Button>
-                  ) : (
-                    '-'
-                  )}
+                  <Button variant="ghost" size="icon" className="flex size-8 text-muted-foreground">
+                    <CustomDialog title="DWR" subtitle={'your dwr records'} date={new Date(row.date).toLocaleDateString()} content={row.dwr} />
+                  </Button>
                 </TableCell>
               </TableRow>
             ))
