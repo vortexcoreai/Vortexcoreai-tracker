@@ -157,13 +157,20 @@ export interface Attendance {
    */
   workDuration?: number | null
   /**
+   * Total breaks
+   */
+  breaks?:
+    | {
+        breakStartTime?: number | null
+        breakEndTime?: number | null
+        totalBreakTime?: number | null
+        id?: string | null
+      }[]
+    | null
+  /**
    * Daily Work Report
    */
   dwr?: string | null
-  /**
-   * Overtime in hours
-   */
-  overtimeHours?: number | null
   /**
    * Manager or employee notes
    */
@@ -307,8 +314,15 @@ export interface AttendanceSelect<T extends boolean = true> {
   clockOut?: T
   status?: T
   workDuration?: T
+  breaks?:
+    | T
+    | {
+        breakStartTime?: T
+        breakEndTime?: T
+        totalBreakTime?: T
+        id?: T
+      }
   dwr?: T
-  overtimeHours?: T
   remarks?: T
   approvedBy?: T
   updatedAt?: T

@@ -11,8 +11,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        console.log('Creds received:', credentials)
-
         const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -23,10 +21,8 @@ export const authOptions: NextAuthOptions = {
         })
 
         const data = await res.json()
-        console.log('Payload response:', data)
 
         if (!res.ok || !data.user) {
-          console.log('Authorize failed')
           return null
         }
 

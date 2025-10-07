@@ -69,16 +69,39 @@ export const Attendance: CollectionConfig = {
       admin: { description: 'Total hours worked (auto or manual)' },
     },
     {
+      name: 'breaks',
+      type: 'array',
+      label: 'Breaks',
+      required: false,
+      fields: [
+        {
+          name: 'breakStartTime',
+          type: 'number',
+          label: 'Break Start Time',
+          required: false,
+        },
+        {
+          name: 'breakEndTime',
+          type: 'number',
+          label: 'Break End Time',
+          required: false,
+        },
+        {
+          name: 'totalBreakTime',
+          type: 'number',
+          label: 'Total Break Time',
+          required: false,
+        },
+      ],
+      admin: {
+        description: 'Total breaks',
+      },
+    },
+    {
       name: 'dwr',
       type: 'textarea',
       required: false,
       admin: { description: 'Daily Work Report' },
-    },
-    {
-      name: 'overtimeHours',
-      type: 'number',
-      required: false,
-      admin: { description: 'Overtime in hours' },
     },
     {
       name: 'remarks',

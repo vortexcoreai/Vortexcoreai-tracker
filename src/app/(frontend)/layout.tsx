@@ -8,11 +8,10 @@ import { ThemeProvider } from '@/components/themeProvider'
 export default function RootLayout({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <QueryClientProvider client={queryClient}>
           <SessionProviderWrapper>
-            {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange> */}
             <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
               {children}
             </ThemeProvider>

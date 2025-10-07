@@ -24,17 +24,17 @@ const data = {
     },
     {
       title: 'Analytics',
-      url: '#',
+      url: '/dashboard/analytics',
       icon: BarChartIcon,
     },
     {
       title: 'Projects',
-      url: '#',
+      url: '/dashboard/projects',
       icon: FolderIcon,
     },
     {
       title: 'Team',
-      url: '#',
+      url: '/dashboard/team',
       icon: UsersIcon,
     },
   ],

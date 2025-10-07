@@ -69,6 +69,12 @@ export default function TimeTracker() {
   const todayDay = dayjs().format('dddd')
   const todayDate = dayjs().format('MMMM D, YYYY')
 
+  const formattedBreaks = breaks.map((b) => ({
+    breakStartTime: b.start,
+    breakEndTime: b.end,
+    totalBreakTime: b.end - b.start,
+  }))
+
   const mutation = useMutation({
     mutationFn: () =>
       apiFetchPost('/api/attendance', {
@@ -78,12 +84,8 @@ export default function TimeTracker() {
         status: 'present',
         workDuration: actualWorkedTime,
         dwr: dwr,
-        overtimeHours: 2,
         remarks: 'Completed all tasks',
-        breaks: breaks.map((b) => ({
-          start: new Date(b.start).toISOString(),
-          end: b.end ? new Date(b.end).toISOString() : new Date().toISOString(),
-        })),
+        breaks: formattedBreaks,
       }),
     onSuccess: () => console.log('Attendance saved!'),
     onError: (err: any) => console.error('Failed to save attendance', err),

@@ -3,7 +3,6 @@
 import { useSession } from 'next-auth/react'
 
 export async function clientApiFetch(path, token, options = {}) {
-  console.log()
   const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_URL}${path}`, {
     ...options,
     cache: 'no-store',

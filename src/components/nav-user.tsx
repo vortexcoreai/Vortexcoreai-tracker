@@ -17,7 +17,7 @@ export function NavUser() {
   const user = {
     name: session.user.email.split('@')[0],
     email: session.user.email,
-    avatar: '/default-avatar.png',
+    avatar: '/cat.gif',
   }
 
   return (

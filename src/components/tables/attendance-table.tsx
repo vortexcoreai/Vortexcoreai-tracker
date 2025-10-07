@@ -7,25 +7,20 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog } from '@radix-ui/react-dialog'
-import { CustomDialog } from './dialog'
+import { CustomDialog } from '../dialog'
 
-export function AttendanceTable({ initialData }) {
-  const [data, setData] = useState([...initialData].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()))
+export function AttendanceTable({ tableHeader, tableData }) {
+  const [data, setData] = useState([...tableData].reverse())
   const [loading, setLoading] = useState(false)
-  console.log(data)
 
   return (
     <>
       <Table>
         <TableHeader className="sticky top-0 z-10 bg-muted">
           <TableRow>
-            <TableHead>Date</TableHead>
-            <TableHead>Clock In</TableHead>
-            <TableHead>Clock Out</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Work Duration</TableHead>
-            <TableHead>Reviewer</TableHead>
-            <TableHead>DWR</TableHead>
+            {tableHeader.map((header, index) => (
+              <TableHead key={index}>{header}</TableHead>
+            ))}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -54,11 +49,24 @@ export function AttendanceTable({ initialData }) {
                     {row.workDuration || '-'}
                   </Badge>
                 </TableCell>
-                <TableCell>{row.reviewer || '-'}</TableCell>
                 <TableCell>
-                  <Button variant="ghost" size="icon" className="flex size-8 text-muted-foreground">
-                    <CustomDialog title="DWR" subtitle={'your dwr records'} date={new Date(row.date).toLocaleDateString()} content={row.dwr} />
-                  </Button>
+                  {row.breaks.map((b, index) => {
+                    const start = new Date(b.breakStartTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    const end = new Date(b.breakEndTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    const durationMinutes = Math.round(b.totalBreakTime / 1000 / 60)
+
+                    return (
+                      <div key={b.id || index} style={{ marginBottom: 4 }}>
+                        {start} - {end} ({durationMinutes} min)
+                      </div>
+                    )
+                  })}
+                </TableCell>
+
+                <TableCell>
+                  {/* <Button variant="ghost" size="icon" className="flex size-8 text-muted-foreground"> */}
+                  <CustomDialog title="DWR" subtitle={'your dwr records'} date={new Date(row.date).toLocaleDateString()} content={row.dwr} />
+                  {/* </Button> */}
                 </TableCell>
               </TableRow>
             ))
