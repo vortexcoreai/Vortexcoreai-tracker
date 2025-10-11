@@ -1,5 +1,5 @@
-import TimeTracker from '@/components/timeTracker'
+import TimeTracker from "@/components/timeTracker";
 
 export default function AttendancePage() {
-  return <TimeTracker />
+	return <TimeTracker />;
 }
