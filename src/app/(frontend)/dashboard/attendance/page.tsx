@@ -1,23 +1,23 @@
-"use client";
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import { useUserSession } from "@/hooks/useUserSession";
-import { clientApiFetch } from "@/lib/api-client";
-import { Tabs } from "@/components/ui/tabs";
-import { AttendanceTable } from "@/components/tables/attendance-table";
 import { CustomDropdown } from "@/components/customDropdown";
-import { useQuery } from "@tanstack/react-query";
+import { CustomTables } from "@/components/customTables";
+import { apiFetch } from "@/lib/api";
 
-export default function Page() {
-	const tableHeaders = [
-		"Date",
-		"Clock In",
-		"Clock Out",
-		"Status",
-		"Work Duration",
-		"Breaks",
-		"DWR",
-	];
+export default async function Page({ searchParams }) {
+	const resolvedParams = await searchParams;
+
+	const year = resolvedParams?.year || new Date().getFullYear();
+	const month = resolvedParams?.month || new Date().getMonth() + 1;
+	const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
+	const lastDate = new Date(Number(year), Number(month), 0)
+		.toISOString()
+		.split("T")[0];
+
+	const data = await apiFetch(
+		`/api/attendance?where[date][greater_than_equal]=${startDate}&where[date][less_than_equal]=${lastDate}&limit=100&sort=date`,
+	);
+
+	const attendance = data.docs;
+
 	const months = [
 		{ January: 1 },
 		{ February: 2 },
@@ -40,42 +40,39 @@ export default function Page() {
 		{ "2026": 2026 },
 	];
 
-	const userToken = useUserSession();
-	const searchParams = useSearchParams();
+	const header = [
+		"Date",
+		"Clock In",
+		"Clock Out",
+		"Breaks",
+		"Status",
+		"Approved By",
+		"DWR",
+	];
 
-	const year = Number(searchParams.get("year")) || new Date().getFullYear();
-	const month = Number(searchParams.get("month")) || new Date().getMonth() + 1;
-
-	const { data, isLoading, error } = useQuery({
-		queryKey: [year, month],
-		queryFn: async () => {
-			const res = await clientApiFetch(
-				`/api/attendance?where[date][greater_than_equal]=${year}-${month}-01&where[date][less_than_equal]=${year}-${month}-31&limit=100&sort=date`,
-				userToken,
-			);
-			return res.docs || [];
+	const tableData = attendance.map((item) => ({
+		date: { value: item.date || "-", type: "date-format" },
+		clockIn: { value: item.clockIn || "-", type: "time-format" },
+		clockOut: { value: item.clockOut || "-", type: "time-format" },
+		breaks: { value: item.breaks || "-", type: "break-format" },
+		status: { value: item.status || "-", type: "status-format" },
+		approvedBy: { value: item.approvedBy || "-", type: "user-format" },
+		reason: {
+			value: item.dwr || "-",
+			type: "dialog-format",
+			title: "DWR",
+			subtitle: "your dwr records",
 		},
-		enabled: !!userToken,
-	});
+	}));
 
 	return (
-		<Tabs className="flex w-full flex-col gap-6">
-			<div className="flex items-center justify-between">
+		<>
+			<div className="mb-4 flex gap-4">
 				<CustomDropdown title="Months" data={months} params="month" />
 				<CustomDropdown title="Years" data={years} params="year" />
 			</div>
 
-			<div className="relative flex flex-col gap-4 overflow-auto">
-				<div className="overflow-hidden rounded-lg border">
-					{isLoading && <p className="p-4">Loading attendance...</p>}
-					{error && (
-						<p className="p-4 text-red-500">Error loading attendance</p>
-					)}
-					{data && (
-						<AttendanceTable tableHeader={tableHeaders} tableData={data} />
-					)}
-				</div>
-			</div>
-		</Tabs>
+			<CustomTables tableHeader={header} tableData={tableData} />
+		</>
 	);
 }

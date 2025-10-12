@@ -1,16 +1,16 @@
+import { Edit, Mail, Settings, Star, Users } from "lucide-react";
 import Image from "next/image";
+import { ThemeChanger } from "@/components/themeChanger";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Edit, Settings, Mail, Star, Users } from "lucide-react";
 import { apiFetch } from "@/lib/api";
-import { ThemeChanger } from "@/components/themeChanger";
 
 export default async function Page() {
 	const data = await apiFetch("/api/users/me");
 	const user = data.user;
 
 	return (
-		<div id="account-container">
+		<div>
 			<div className="container mx-auto px-4 py-6 md:px-6 2xl:max-w-[1400px]">
 				{/* Header */}
 				<div className="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row">
@@ -108,7 +108,7 @@ export default async function Page() {
 									label: "Satisfaction Rate",
 								},
 							].map((stat, i) => (
-								<Card key={i}>
+								<Card key={`unique-key-${i + i}`}>
 									<CardContent className="flex items-center gap-4 p-6">
 										<div className="rounded-lg bg-primary/10 p-2">
 											{stat.icon}
@@ -131,7 +131,7 @@ export default async function Page() {
 								<div className="space-y-4">
 									{Array.from({ length: 3 }).map((_, i) => (
 										<div
-											key={i}
+											key={`unique-key-${i + i}`}
 											className="flex items-start gap-4 border-b pb-4 last:border-0"
 										>
 											<div className="rounded-full bg-muted p-2">

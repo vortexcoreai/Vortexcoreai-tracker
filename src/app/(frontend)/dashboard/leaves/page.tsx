@@ -1,17 +1,9 @@
-import { format } from "date-fns";
-import { apiFetch } from "@/lib/api";
-import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import { CustomTables } from "@/components/customTables";
 import { DynamicForm } from "@/components/dynamicForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
+import { apiFetch } from "@/lib/api";
+import { authOptions } from "@/lib/auth";
 
 export default async function Page() {
 	const session = await getServerSession(authOptions);
@@ -19,6 +11,33 @@ export default async function Page() {
 
 	const data = await apiFetch("/api/leaves");
 	const leaves = data.docs;
+
+	const tableHeader = ["From", "To", "Approved By", "Status", "Reason"];
+
+	const tableData = leaves.map((item) => ({
+		from: {
+			value: item.from || "-",
+			type: "date-format",
+		},
+		to: {
+			value: item.to || "-",
+			type: "date-format",
+		},
+		approvedBy: {
+			value: item.approvedBy || "-",
+			type: "user-format",
+		},
+		status: {
+			value: item.status || "-",
+			type: "status-format",
+		},
+		reason: {
+			value: item.reason || "-",
+			type: "dialog-format",
+			title: "Leave details",
+			subtitle: "Your leave request details are being reviewed.",
+		},
+	}));
 
 	return (
 		<div className="min-h-screen">
@@ -65,53 +84,7 @@ export default async function Page() {
 					</Card>
 				</div>
 
-				<Card className="shadow-sm border">
-					<CardHeader>
-						<CardTitle className="text-lg font-semibold">
-							Previous Leaves
-						</CardTitle>
-					</CardHeader>
-					<CardContent className="bg-accent p-4">
-						<Table>
-							<TableHeader>
-								<TableRow>
-									<TableHead>From</TableHead>
-									<TableHead>To</TableHead>
-									<TableHead>Reason</TableHead>
-									<TableHead>Status</TableHead>
-									<TableHead>Approved By</TableHead>
-								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{leaves.length === 0 ? (
-									<TableRow>
-										<TableCell colSpan={6} className="text-center py-6">
-											No previous leaves found.
-										</TableCell>
-									</TableRow>
-								) : (
-									leaves.map((leave) => (
-										<TableRow key={leave.id}>
-											<TableCell>
-												{leave.from
-													? format(new Date(leave.from), "dd MMM yyyy")
-													: "-"}
-											</TableCell>
-											<TableCell>
-												{leave.to
-													? format(new Date(leave.to), "dd MMM yyyy")
-													: "-"}
-											</TableCell>
-											<TableCell>{leave.reason || "-"}</TableCell>
-											<TableCell>{leave.status || "-"}</TableCell>
-											<TableCell>{leave.approvedBy?.id || "-"}</TableCell>
-										</TableRow>
-									))
-								)}
-							</TableBody>
-						</Table>
-					</CardContent>
-				</Card>
+				<CustomTables tableHeader={tableHeader} tableData={tableData} />
 			</div>
 		</div>
 	);

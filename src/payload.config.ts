@@ -1,20 +1,19 @@
-import path from "path";
+import payloadSimpleRBAC, { starterRoles } from "@nouance/payload-simple-rbac";
 
-import { postgresAdapter } from '@payloadcms/db-postgres'
-// import { sqliteAdapter } from "@payloadcms/db-sqlite";
+// import { postgresAdapter } from "@payloadcms/db-postgres";
+import { sqliteAdapter } from "@payloadcms/db-sqlite";
 
 import { payloadCloudPlugin } from "@payloadcms/payload-cloud";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import path from "path";
 import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
-
-import { Users } from "./collections/Users";
 import { Attendance } from "./collections/Attendance";
-import { Teams } from "./collections/Teams";
-import { Leaves } from "./collections/Leaves";
 import { Departments } from "./collections/departments";
 import { Designations } from "./collections/designations";
-import payloadSimpleRBAC, { starterRoles } from "@nouance/payload-simple-rbac";
+import { Leaves } from "./collections/Leaves";
+import { Teams } from "./collections/Teams";
+import { Users } from "./collections/Users";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -32,19 +31,17 @@ export default buildConfig({
 		outputFile: path.resolve(dirname, "payload-types.ts"),
 	},
 
-	db: postgresAdapter({
-	  pool: {
-	    connectionString: process.env.DATABASE_URI || '',
-	  },
-	}),
-
-	// db: sqliteAdapter({
-	// 	client: {
-	// 		url: `file:${path.resolve(dirname, "dev.db")}`,
+	// db: postgresAdapter({
+	// 	pool: {
+	// 		connectionString: process.env.DATABASE_URI || "",
 	// 	},
 	// }),
 
-	plugins: [
-		payloadCloudPlugin(),
-	],
+	db: sqliteAdapter({
+		client: {
+			url: `file:${path.resolve(dirname, "dev.db")}`,
+		},
+	}),
+
+	plugins: [payloadCloudPlugin()],
 });
