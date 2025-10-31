@@ -1,21 +1,21 @@
 "use client";
 
-import dayjs from "dayjs";
-import { useState, useEffect } from "react";
-import duration from "dayjs/plugin/duration";
-import { apiFetchPost } from "@/lib/postApi";
 import { useMutation } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
 	Card,
-	CardHeader,
-	CardTitle,
 	CardContent,
 	CardFooter,
+	CardHeader,
+	CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
+import { apiFetchPost } from "@/lib/postApi";
 
 dayjs.extend(duration);
 
@@ -95,7 +95,6 @@ export default function TimeTracker() {
 				remarks: "Completed all tasks",
 				breaks: formattedBreaks,
 			}),
-		onSuccess: () => console.log("Attendance saved!"),
 		onError: (err: any) => console.error("Failed to save attendance", err),
 	});
 

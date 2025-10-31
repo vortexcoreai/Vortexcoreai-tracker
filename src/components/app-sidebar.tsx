@@ -1,9 +1,6 @@
 "use client";
 
-import type * as React from "react";
 import {
-	Timer,
-	ArrowUpCircleIcon,
 	BarChartIcon,
 	CameraIcon,
 	DatabaseIcon,
@@ -11,14 +8,13 @@ import {
 	FileTextIcon,
 	FolderIcon,
 	LayoutDashboardIcon,
-	ListIcon,
-	SettingsIcon,
+	Timer,
 	UsersIcon,
 } from "lucide-react";
-
-import { NavDocuments } from "@/components/nav-documents";
+import Image from "next/image";
+import Link from "next/link";
+import type * as React from "react";
 import { NavMain } from "@/components/nav-main";
-// import { NavSecondary } from '@/components/nav-secondary'
 import { NavUser } from "@/components/nav-user";
 import {
 	Sidebar,
@@ -29,7 +25,6 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import Link from "next/link";
 
 const data = {
 	navMain: [
@@ -54,8 +49,8 @@ const data = {
 			icon: FolderIcon,
 		},
 		{
-			title: "Team",
-			url: "/dashboard/team",
+			title: "Manage",
+			url: "/dashboard/manage",
 			icon: UsersIcon,
 		},
 	],
@@ -127,8 +122,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 							asChild
 							className="data-[slot=sidebar-menu-button]:!p-1.5"
 						>
-							<Link href="/dashboard">
-								<ArrowUpCircleIcon className="h-5 w-5" />
+							<Link href="/dashboard" className="p-0">
+								<Image src="/vortex.png" width={40} height={40} alt="logo" />
 								<span className="text-base font-semibold">VortexCoreAI</span>
 							</Link>
 						</SidebarMenuButton>
@@ -137,8 +132,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			</SidebarHeader>
 			<SidebarContent>
 				<NavMain items={data.navMain} />
-				{/* <NavDocuments items={data.documents} /> */}
-				{/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
 			</SidebarContent>
 			<SidebarFooter>
 				<NavUser user={data.user} />

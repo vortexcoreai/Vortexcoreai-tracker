@@ -1,8 +1,8 @@
-import { Edit, Mail, Settings, Star, Users } from "lucide-react";
+import { Edit, Star, Users } from "lucide-react";
 import Image from "next/image";
 import { ThemeChanger } from "@/components/themeChanger";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { apiFetch } from "@/lib/api";
 
 export default async function Page() {
@@ -10,111 +10,77 @@ export default async function Page() {
 	const user = data.user;
 
 	return (
-		<div>
-			<div className="container mx-auto px-4 py-6 md:px-6 2xl:max-w-[1400px]">
-				{/* Header */}
-				<div className="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row">
-					<h1 className="text-2xl font-semibold">Profile</h1>
+		<div className="min-h-screen bg-background">
+			<div className="container mx-auto px-4 py-10 md:px-6 2xl:max-w-[1400px]">
+				<div className="mb-10 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+					<h1 className="text-3xl font-semibold tracking-tight">Profile</h1>
 					<div className="flex gap-2">
-						<Button>
-							<Edit className="w-4" />
-							Edit Profile
-						</Button>
-						<Button>
-							<Settings className="w-4" />
-							Settings
+						<Button variant="outline" className="gap-2">
+							<Edit className="size-4" />
+							Edit
 						</Button>
 						<ThemeChanger />
 					</div>
 				</div>
 
-				{/* Main Grid */}
-				<div className="grid gap-6 md:grid-cols-4">
-					{/* Sidebar Profile Card */}
+				<div className="grid gap-8 md:grid-cols-4">
 					<div className="md:col-span-1">
-						<Card>
+						<Card className="border-border/50 shadow-sm">
 							<CardContent className="p-6">
-								<div className="flex flex-col items-center">
-									<span className="relative size-20 shrink-0 overflow-hidden rounded-full">
+								<div className="flex flex-col items-center text-center">
+									<div className="relative h-24 w-24 overflow-hidden rounded-full ring-1 ring-border/40">
 										<Image
-											className="aspect-square size-full"
 											alt="User Avatar"
-											src="https://github.com/shadcn.png"
-											width={80}
-											height={80}
+											src="/cat.gif"
+											width={96}
+											height={96}
+											className="object-cover"
 										/>
-									</span>
+									</div>
 									<h2 className="mt-4 text-lg font-semibold">
 										{user.firstName} {user.lastName}
 									</h2>
-									<p className="text-sm text-muted-foreground">{user.role}</p>
-									<span className="mt-2 w-fit rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
-										{user.designation.name}
-									</span>
-									<Button className="mt-4 w-full">
-										<Mail className="mr-2 size-4" />
-										Message
+									<p className="text-sm text-muted-foreground capitalize">
+										{user.role}
+									</p>
+									<Button
+										variant="secondary"
+										className="mt-4 w-full truncate gap-2 text-xs sm:text-sm"
+									>
+										{user.email}
 									</Button>
-								</div>
-
-								{/* Info Section */}
-								<div className="mt-6 space-y-4 text-sm">
-									<div className="flex justify-between">
-										<span className="text-muted-foreground">Email</span>
-										<span>{user.email}</span>
-									</div>
-									<div className="flex justify-between">
-										<span className="text-muted-foreground">Role</span>
-										<span>{user.role}</span>
-									</div>
-									<div className="flex justify-between">
-										<span className="text-muted-foreground">Phone</span>
-										<span>{user.phone}</span>
-									</div>
-									<div className="flex justify-between">
-										<span className="text-muted-foreground">Address</span>
-										<span>{user.address}</span>
-									</div>
-									<div className="flex justify-between">
-										<span className="text-muted-foreground">Department</span>
-										<span>{user.department.name}</span>
-									</div>
-									<div className="flex justify-between">
-										<span className="text-muted-foreground">Designation</span>
-										<span>{user.designation.title}</span>
-									</div>
 								</div>
 							</CardContent>
 						</Card>
 					</div>
 
-					{/* Main Content */}
-					<div className="space-y-6 md:col-span-3">
-						<div className="grid gap-4 sm:grid-cols-3">
+					<div className="space-y-8 md:col-span-3">
+						<div className="grid gap-4 sm:grid-cols-2">
 							{[
 								{
 									icon: <Star className="size-5 text-primary" />,
-									value: "DOJ",
-									label: user.dateOfJoining,
+									value:
+										user.dateOfJoining && user.dateOfJoining !== "null"
+											? new Date(user.dateOfJoining).toLocaleDateString()
+											: "—",
+									label: "Date of Joining",
 								},
 								{
 									icon: <Users className="size-5 text-primary" />,
-									value: "8.5k",
-									label: "Team Members",
+									value: user.status || "—",
+									label: "Status",
 								},
-								{
-									icon: <Star className="size-5 text-primary" />,
-									value: "99%",
-									label: "Satisfaction Rate",
-								},
-							].map((stat, i) => (
-								<Card key={`unique-key-${i + i}`}>
-									<CardContent className="flex items-center gap-4 p-6">
-										<div className="rounded-lg bg-primary/10 p-2">
+							].map((stat) => (
+								<Card
+									key={stat.value}
+									className="transition-all hover:shadow-sm border-border/50"
+								>
+									<CardContent className="flex items-center gap-4 py-2 px-6">
+										<div className="rounded-md bg-primary/10 p-2">
 											{stat.icon}
 										</div>
 										<div>
-											<p className="text-2xl font-semibold">{stat.value}</p>
+											<p className="text-lg font-semibold">{stat.value}</p>
 											<p className="text-sm text-muted-foreground">
 												{stat.label}
 											</p>
@@ -124,28 +90,55 @@ export default async function Page() {
 							))}
 						</div>
 
-						{/* Recent Activity */}
-						<Card>
-							<CardContent className="p-6">
-								<h3 className="mb-4 text-lg font-semibold">Recent Activity</h3>
-								<div className="space-y-4">
-									{Array.from({ length: 3 }).map((_, i) => (
-										<div
-											key={`unique-key-${i + i}`}
-											className="flex items-start gap-4 border-b pb-4 last:border-0"
-										>
-											<div className="rounded-full bg-muted p-2">
-												<Star className="size-4 text-muted-foreground" />
-											</div>
-											<div>
-												<p className="text-sm">{`Completed project "Dashboard UI"`}</p>
-												<p className="text-xs text-muted-foreground">
-													2 hours ago
-												</p>
-											</div>
-										</div>
-									))}
-								</div>
+						<Card className="border-border/50 shadow-sm">
+							<CardHeader>
+								<CardTitle className="text-lg font-semibold">
+									User Information
+								</CardTitle>
+							</CardHeader>
+							<CardContent className="grid gap-4 sm:grid-cols-2">
+								{[
+									{ label: "ID", value: user.id },
+									{ label: "First Name", value: user.firstName },
+									{ label: "Last Name", value: user.lastName },
+									{ label: "Email", value: user.email },
+									{ label: "Phone", value: user.phone },
+									{ label: "Address", value: user.address },
+									{ label: "Role", value: user.role },
+									{ label: "Status", value: user.status },
+									{
+										label: "Department",
+										value: user.department?.name || "—",
+									},
+									{
+										label: "Designation",
+										value: user.designation?.title || "—",
+									},
+									{
+										label: "Created At",
+										value: new Date(user.createdAt).toLocaleString(),
+									},
+									{
+										label: "Updated At",
+										value: new Date(user.updatedAt).toLocaleString(),
+									},
+									{
+										label: "Team",
+										value: user.team || "—",
+									},
+								].map((item) => (
+									<div
+										key={item.value}
+										className="flex flex-col rounded-lg border border-border/40 bg-muted/20 p-3 transition-all hover:bg-muted/30"
+									>
+										<span className="text-xs text-muted-foreground">
+											{item.label}
+										</span>
+										<span className="truncate text-sm font-medium text-foreground">
+											{item.value ?? "—"}
+										</span>
+									</div>
+								))}
 							</CardContent>
 						</Card>
 					</div>

@@ -1,11 +1,8 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { postgresAdapter } from "@payloadcms/db-postgres";
-// import { sqliteAdapter } from "@payloadcms/db-sqlite";
-
-import { payloadCloudPlugin } from "@payloadcms/payload-cloud";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import path from "path";
 import { buildConfig } from "payload";
-import { fileURLToPath } from "url";
 import { Attendance } from "./collections/Attendance";
 import { Departments } from "./collections/departments";
 import { Designations } from "./collections/designations";
@@ -35,11 +32,5 @@ export default buildConfig({
 		},
 	}),
 
-	// db: sqliteAdapter({
-	// 	client: {
-	// 		url: `file:${path.resolve(dirname, "dev.db")}`,
-	// 	},
-	// }),
-
-	plugins: [payloadCloudPlugin()],
+	plugins: [],
 });

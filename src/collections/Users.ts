@@ -1,4 +1,6 @@
 import type { CollectionConfig } from "payload";
+import { combineAccess } from "@/access/combineAccess";
+import { isAdmin, isHr, isSelf, isTeamLeader } from "@/access/manageAccess";
 
 export const Users: CollectionConfig = {
 	slug: "users",
@@ -77,7 +79,6 @@ export const Users: CollectionConfig = {
 	},
 
 	fields: [
-		// ----- Core Role + Team -----
 		{
 			name: "role",
 			type: "select",
@@ -95,7 +96,6 @@ export const Users: CollectionConfig = {
 			},
 		},
 
-		// ----- Personal Info -----
 		{ name: "firstName", type: "text", required: true },
 		{ name: "lastName", type: "text", required: false },
 		{
@@ -104,12 +104,8 @@ export const Users: CollectionConfig = {
 			required: true,
 			unique: true,
 		},
-		// { name: 'password', type: 'password', required: true },
 		{ name: "phone", type: "text" },
 		{ name: "address", type: "text" },
-
-		// ----- Job Info -----
-		{ name: "employeeId", type: "text", unique: true },
 		{
 			name: "designation",
 			type: "relationship",

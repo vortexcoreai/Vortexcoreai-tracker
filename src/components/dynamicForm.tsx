@@ -1,11 +1,20 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useMutation } from "@tanstack/react-query";
 import { apiFetchPost } from "@/lib/postApi";
+import { Label } from "./ui/label";
 
 export function DynamicForm({ endpoint, fields, extraData = {}, onSuccess }) {
 	const [formData, setFormData] = useState(
@@ -49,6 +58,67 @@ export function DynamicForm({ endpoint, fields, extraData = {}, onSuccess }) {
 							placeholder={field.placeholder || field.label}
 							className="min-h-[120px]"
 						/>
+					);
+				}
+
+				// DATE FIELD
+				if (field.type === "date") {
+					return (
+						<div key={field.name} className="space-y-1">
+							<Label className="text-sm font-medium text-muted-foreground">
+								{field.label || field.name}
+							</Label>
+							<Input
+								type="date"
+								value={formData[field.name]}
+								onChange={(e) => handleChange(field.name, e.target.value)}
+								className="w-full"
+							/>
+						</div>
+					);
+				}
+
+				// SELECT DROPDOWN
+				if (field.type === "select" && field.options) {
+					return (
+						<div key={field.name} className="space-y-1">
+							<Select
+								value={formData[field.name]}
+								onValueChange={(value) => handleChange(field.name, value)}
+							>
+								<SelectTrigger className="w-full">
+									<SelectValue
+										placeholder={field.placeholder || `Select ${field.label}`}
+									/>
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										{field.options.map((option) => (
+											<SelectItem key={option} value={option}>
+												{option.charAt(0).toUpperCase() + option.slice(1)}
+											</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						</div>
+					);
+				}
+
+				// TIME FIELD
+				if (field.type === "time") {
+					return (
+						<div key={field.name} className="space-y-1">
+							<Label className="text-sm font-medium text-muted-foreground">
+								{field.label || field.name}
+							</Label>
+							<Input
+								type="time"
+								value={formData[field.name]}
+								onChange={(e) => handleChange(field.name, e.target.value)}
+								className="w-full"
+							/>
+						</div>
 					);
 				} else {
 					return (

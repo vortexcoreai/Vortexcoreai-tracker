@@ -1,54 +1,40 @@
-import { CustomTables } from "@/components/customTables";
-import { apiFetch } from "@/lib/api";
+import { getServerSession } from "next-auth";
+import { DynamicForm } from "@/components/dynamicForm";
+import { authOptions } from "@/lib/auth";
 
 export default async function Page() {
-	const data = await apiFetch(
-		"/api/attendance?where[date][greater_than_equal]=2025-10-01&where[date][less_than_equal]=2025-10-31&limit=100&sort=date",
+	const session = await getServerSession(authOptions);
+	const currentUserId = session?.user?.id || "";
+
+	return (
+		<div className="min-h-screen">
+			<div className="flex flex-col md:flex-row justify-between gap-4">
+				<DynamicForm
+					endpoint="/api/users"
+					extraData={{ user: currentUserId }}
+					fields={[
+						{
+							name: "firstName",
+							label: "First Name",
+							type: "text",
+							required: true,
+						},
+						{
+							name: "lastName",
+							label: "Last Name",
+							type: "text",
+							required: false,
+						},
+						{ name: "email", label: "Email", type: "email", required: true },
+						{
+							name: "password",
+							label: "Password",
+							type: "password",
+							required: true,
+						},
+					]}
+				/>
+			</div>
+		</div>
 	);
-	const attendance = data.docs;
-	console.log(attendance);
-
-	const header = [
-		"Date",
-		"Clock In",
-		"Clock Out",
-		"Breaks",
-		"Status",
-		"Approved By",
-		"DWR",
-	];
-
-	const tableData = attendance.map((item) => ({
-		date: {
-			value: item.date || "-",
-			type: "date-format",
-		},
-		clockIn: {
-			value: item.clockIn || "-",
-			type: "time-format",
-		},
-		clockOut: {
-			value: item.clockOut || "-",
-			type: "time-format",
-		},
-		breaks: {
-			value: item.breaks || "-",
-			type: "break-format",
-		},
-		status: {
-			value: item.status || "-",
-			type: "status-format",
-		},
-		approvedBy: {
-			value: item.approvedBy || "-",
-			type: "user-format",
-		},
-		reason: {
-			value: item.dwr || "-",
-			type: "dialog-format",
-			title: "DWR",
-			subtitle: "your dwr records",
-		},
-	}));
-	return <CustomTables tableHeader={header} tableData={tableData} />;
 }

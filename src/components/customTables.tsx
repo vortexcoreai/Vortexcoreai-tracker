@@ -1,4 +1,5 @@
 import { CheckCircle2Icon, LoaderIcon } from "lucide-react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import {
 	Table,
@@ -9,6 +10,7 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { CustomDialog } from "./dialog";
+import { DeleteButtonClient } from "./table/deleteButton";
 
 export function CustomTables({ tableHeader, tableData }) {
 	const data = [...tableData].reverse();
@@ -30,14 +32,14 @@ export function CustomTables({ tableHeader, tableData }) {
 					<TableBody>
 						{data.length ? (
 							data.map((row, i) => (
-								<TableRow key={row.id}>
+								<TableRow key={`unique${i + i}`}>
 									{Object.keys(row).map((key) => {
 										const cell = row[key];
 
 										switch (cell.type) {
 											case "date-format":
 												return (
-													<TableCell key={cell.id}>
+													<TableCell key={cell.value}>
 														<Badge
 															variant="outline"
 															className="px-1.5 text-muted-foreground"
@@ -49,7 +51,7 @@ export function CustomTables({ tableHeader, tableData }) {
 
 											case "time-format":
 												return (
-													<TableCell key={cell.id}>
+													<TableCell key={cell.id + cell.value}>
 														<Badge
 															variant="outline"
 															className="px-1.5 text-muted-foreground"
@@ -69,7 +71,8 @@ export function CustomTables({ tableHeader, tableData }) {
 													cell.value === "pending"
 														? "bg-yellow-500"
 														: cell.value === "present" ||
-																cell.value === "success"
+																cell.value === "success" ||
+																cell.value === "active"
 															? "bg-green-500"
 															: "bg-red-500"
 												}`}
@@ -93,6 +96,20 @@ export function CustomTables({ tableHeader, tableData }) {
 														>
 															👤 {cell.value}
 														</Badge>
+													</TableCell>
+												);
+
+											case "delete-format":
+												return (
+													<TableCell key={`delete-format-${cell.type + i}`}>
+														{cell.userType !== "admin" ? (
+															<DeleteButtonClient
+																url={cell.url}
+																value={cell.value}
+															/>
+														) : (
+															<span className="text-muted-foreground">-</span>
+														)}
 													</TableCell>
 												);
 
@@ -143,9 +160,20 @@ export function CustomTables({ tableHeader, tableData }) {
 													</TableCell>
 												);
 
+											case "link-format":
+												return (
+													<TableCell key={`link-format-${cell.link}`}>
+														{cell.userType !== "admin" ? (
+															<Link href={cell.link}>Edit</Link>
+														) : (
+															<span className="text-muted-foreground">-</span>
+														)}
+													</TableCell>
+												);
+
 											default:
 												return (
-													<TableCell key={`unique-key-${cell.type + i}`}>
+													<TableCell key={`767-key-${cell.value + i}`}>
 														{cell.value}
 													</TableCell>
 												);

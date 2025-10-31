@@ -1,7 +1,6 @@
 import type { CollectionConfig } from "payload";
-import payload from "payload";
-import { isAdmin, isHr, isSelf, isTeamLeader } from "@/access/manageAccess";
 import { combineAccess } from "@/access/combineAccess";
+import { isAdmin, isHr, isSelf, isTeamLeader } from "@/access/manageAccess";
 
 export const Leaves: CollectionConfig = {
 	slug: "leaves",

@@ -78,9 +78,6 @@ export default async function Page() {
 								Leaves Overview
 							</CardTitle>
 						</CardHeader>
-						<CardContent>
-							{/* Additional stats/filters can go here */}
-						</CardContent>
 					</Card>
 				</div>
 

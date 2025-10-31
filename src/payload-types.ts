@@ -139,7 +139,6 @@ export interface User {
 	lastName?: string | null;
 	phone?: string | null;
 	address?: string | null;
-	employeeId?: string | null;
 	designation?: (number | null) | Designation;
 	department?: (number | null) | Department;
 	dateOfJoining?: string | null;
@@ -204,7 +203,7 @@ export interface Attendance {
 	date: string;
 	clockIn: string;
 	clockOut?: string | null;
-	status: "present" | "absent" | "half-day" | "leave";
+	status?: ("present" | "absent" | "half-day" | "leave") | null;
 	/**
 	 * Total hours worked (auto or manual)
 	 */
@@ -334,7 +333,6 @@ export interface UsersSelect<T extends boolean = true> {
 	lastName?: T;
 	phone?: T;
 	address?: T;
-	employeeId?: T;
 	designation?: T;
 	department?: T;
 	dateOfJoining?: T;

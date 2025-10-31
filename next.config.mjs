@@ -9,12 +9,21 @@ const nextConfig = {
 		ignoreDuringBuilds: true,
 	},
 
+	experimental: {
+		turbo: false,
+	},
+
 	webpack: (webpackConfig) => {
 		webpackConfig.resolve.extensionAlias = {
 			".cjs": [".cts", ".cjs"],
 			".js": [".ts", ".tsx", ".js", ".jsx"],
 			".mjs": [".mts", ".mjs"],
 		};
+
+		webpackConfig.module.rules.push({
+			test: /\.md$/,
+			use: "ignore-loader",
+		});
 
 		return webpackConfig;
 	},
@@ -29,4 +38,4 @@ const nextConfig = {
 	},
 };
 
-export default withPayload(nextConfig, { devBundleServerPackages: false });
+export default withPayload(nextConfig);

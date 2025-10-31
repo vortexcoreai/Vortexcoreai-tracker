@@ -2,18 +2,19 @@ import { CustomDropdown } from "@/components/customDropdown";
 import { CustomTables } from "@/components/customTables";
 import { apiFetch } from "@/lib/api";
 
-export default async function Page({ searchParams }) {
+export default async function Page({ searchParams, params }) {
+	const { user } = await params;
 	const resolvedParams = await searchParams;
 
 	const year = resolvedParams?.year || new Date().getFullYear();
 	const month = resolvedParams?.month || new Date().getMonth() + 1;
 	const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
-	const lastDate = new Date(Number(year), Number(month), 1)
+	const lastDate = new Date(Number(year), Number(month), 0)
 		.toISOString()
 		.split("T")[0];
 
 	const data = await apiFetch(
-		`/api/attendance?where[date][greater_than_equal]=${startDate}&where[date][less_than_equal]=${lastDate}&limit=100&sort=date`,
+		`/api/attendance?where[date][greater_than_equal]=${startDate}&where[date][less_than_equal]=${lastDate}&limit=100&sort=date&where[user.id][equals]=${user}`,
 	);
 
 	const attendance = data.docs;
@@ -41,6 +42,8 @@ export default async function Page({ searchParams }) {
 	];
 
 	const header = [
+		"Edit",
+		"Id",
 		"Date",
 		"Clock In",
 		"Clock Out",
@@ -51,6 +54,11 @@ export default async function Page({ searchParams }) {
 	];
 
 	const tableData = attendance.map((item) => ({
+		ediit: {
+			link: `/dashboard/manage/attendance/${user}/${item.id}`,
+			type: "link-format",
+		},
+		id: { value: item.id || "-" },
 		date: { value: item.date || "-", type: "date-format" },
 		clockIn: { value: item.clockIn || "-", type: "time-format" },
 		clockOut: { value: item.clockOut || "-", type: "time-format" },

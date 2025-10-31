@@ -8,7 +8,7 @@ export default async function Page({ searchParams }) {
 	const year = resolvedParams?.year || new Date().getFullYear();
 	const month = resolvedParams?.month || new Date().getMonth() + 1;
 	const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
-	const lastDate = new Date(Number(year), Number(month), 1)
+	const lastDate = new Date(Number(year), Number(month), 0)
 		.toISOString()
 		.split("T")[0];
 
@@ -41,6 +41,7 @@ export default async function Page({ searchParams }) {
 	];
 
 	const header = [
+		"Id",
 		"Date",
 		"Clock In",
 		"Clock Out",
@@ -51,6 +52,7 @@ export default async function Page({ searchParams }) {
 	];
 
 	const tableData = attendance.map((item) => ({
+		id: { value: item.id || "-", type: "date-format" },
 		date: { value: item.date || "-", type: "date-format" },
 		clockIn: { value: item.clockIn || "-", type: "time-format" },
 		clockOut: { value: item.clockOut || "-", type: "time-format" },
