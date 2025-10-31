@@ -57,11 +57,11 @@ export default function Page() {
 						button: "Open Leaves",
 						link: "/manage/leaves",
 					},
-				].map((item, index) => {
+				].map((item) => {
 					const Icon = item.icon;
 					return (
 						<Card
-							key={index}
+							key={item.title}
 							className="group relative overflow-hidden border border-border/50 rounded-2xl transition-all duration-300 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
 						>
 							{/* Gradient hover layer */}
