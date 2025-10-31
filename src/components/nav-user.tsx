@@ -1,6 +1,8 @@
 "use client";
 
-import { MoreVerticalIcon, LogOutIcon, Settings } from "lucide-react";
+import { LogOutIcon, MoreVerticalIcon, Settings } from "lucide-react";
+import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	DropdownMenu,
@@ -16,9 +18,6 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
-
-import { useSession, signOut } from "next-auth/react";
-import Link from "next/link";
 
 export function NavUser() {
 	const { isMobile } = useSidebar();
@@ -80,7 +79,7 @@ export function NavUser() {
 							</div>
 						</DropdownMenuLabel>
 
-						<Link href={"/dashboard/account"}>
+						<Link href={"/account"}>
 							<DropdownMenuItem>
 								<Settings />
 								Settings

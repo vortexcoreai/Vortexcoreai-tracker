@@ -8,7 +8,7 @@ export default async function Page({ searchParams }) {
 	const year = resolvedParams?.year || new Date().getFullYear();
 	const month = resolvedParams?.month || new Date().getMonth() + 1;
 	const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
-	const lastDate = new Date(Number(year), Number(month), 0)
+	const lastDate = new Date(Number(year), Number(month), 1)
 		.toISOString()
 		.split("T")[0];
 

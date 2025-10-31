@@ -37,7 +37,7 @@ export default function Page() {
 						content:
 							"View the complete user directory and manage access permissions efficiently across departments.",
 						button: "Open Users",
-						link: "/dashboard/manage/user",
+						link: "/manage/user",
 					},
 					{
 						icon: CalendarDays,
@@ -46,7 +46,7 @@ export default function Page() {
 						content:
 							"Monitor attendance logs, analyze punctuality, and approve correction requests seamlessly.",
 						button: "Open Attendance",
-						link: "/dashboard/manage/attendance",
+						link: "/manage/attendance",
 					},
 					{
 						icon: ClipboardList,
@@ -55,7 +55,7 @@ export default function Page() {
 						content:
 							"View pending and approved leave requests, maintain transparency, and keep track of balances.",
 						button: "Open Leaves",
-						link: "/dashboard/manage/leaves",
+						link: "/manage/leaves",
 					},
 				].map((item, index) => {
 					const Icon = item.icon;

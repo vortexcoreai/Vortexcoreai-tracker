@@ -1,7 +1,7 @@
 "use client";
 
 import { Trash } from "lucide-react";
-import { deleteItem } from "@/app/(frontend)/dashboard/actions/deleteItem";
+import { deleteItem } from "@/app/(frontend)/(dashboard)/actions/deleteItem";
 import { Button } from "../ui/button";
 
 export function DeleteButtonClient({ url, value }) {

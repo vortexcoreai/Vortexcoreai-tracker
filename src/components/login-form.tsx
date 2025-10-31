@@ -31,7 +31,7 @@ export function LoginForm({
 			if (res?.error) {
 				alert(res.error || "Login failed");
 			} else {
-				router.push("/dashboard");
+				router.push("/");
 			}
 		} catch (err) {
 			console.error(err);

@@ -9,7 +9,7 @@ export default async function Page({ searchParams, params }) {
 	const year = resolvedParams?.year || new Date().getFullYear();
 	const month = resolvedParams?.month || new Date().getMonth() + 1;
 	const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
-	const lastDate = new Date(Number(year), Number(month), 0)
+	const lastDate = new Date(Number(year), Number(month), 1)
 		.toISOString()
 		.split("T")[0];
 
@@ -55,7 +55,7 @@ export default async function Page({ searchParams, params }) {
 
 	const tableData = attendance.map((item) => ({
 		ediit: {
-			link: `/dashboard/manage/attendance/${user}/${item.id}`,
+			link: `/manage/attendance/${user}/${item.id}`,
 			type: "link-format",
 		},
 		id: { value: item.id || "-" },

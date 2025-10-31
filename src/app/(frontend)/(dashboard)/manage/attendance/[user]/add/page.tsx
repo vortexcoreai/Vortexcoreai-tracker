@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
-import { DynamicEditForm } from "@/components/dynamicEditForm";
+import { DynamicForm } from "@/components/dynamicForm";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -14,11 +14,11 @@ import { Separator } from "@/components/ui/separator";
 import { apiFetch } from "@/lib/api";
 import { authOptions } from "@/lib/auth";
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }) {
 	const { id } = await params;
 	const session = await getServerSession(authOptions);
 	const currentUserId = session?.user?.id || "";
-	const data = await apiFetch(`/api/attendance/${id}`);
+	const data = await apiFetch(`/api/attendance/`);
 
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-muted/30 p-6">
@@ -26,14 +26,14 @@ export default async function Page({ params }: PageProps) {
 				<div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
 					<div>
 						<h1 className="text-3xl font-bold tracking-tight text-foreground">
-							Edit Attendance
+							Add Attendance
 						</h1>
 						<p className="text-muted-foreground mt-2">
-							Update Attendance details below. Make sure all required fields are
+							Add Attendance details below. Make sure all required fields are
 							filled.
 						</p>
 					</div>
-					<Link href="/dashboard/user/">
+					<Link href="/user/">
 						<Button variant="outline" className="flex items-center gap-2">
 							<ArrowLeft size={16} /> Back
 						</Button>
@@ -53,7 +53,7 @@ export default async function Page({ params }: PageProps) {
 					<Separator className="my-2" />
 
 					<CardContent>
-						<DynamicEditForm
+						<DynamicForm
 							endpoint={`/api/attendance/${id}`}
 							values={data}
 							extraData={{ user: currentUserId }}

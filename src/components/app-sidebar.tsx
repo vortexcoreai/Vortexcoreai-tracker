@@ -30,27 +30,27 @@ const data = {
 	navMain: [
 		{
 			title: "Attendance",
-			url: "/dashboard/attendance?year=2025&month=10",
+			url: "/attendance?year=2025&month=10",
 			icon: LayoutDashboardIcon,
 		},
 		{
 			title: "Timer",
-			url: "/dashboard/timer",
+			url: "/timer",
 			icon: Timer,
 		},
 		{
 			title: "Analytics",
-			url: "/dashboard/analytics",
+			url: "/analytics",
 			icon: BarChartIcon,
 		},
 		{
 			title: "Projects",
-			url: "/dashboard/projects",
+			url: "/projects",
 			icon: FolderIcon,
 		},
 		{
 			title: "Manage",
-			url: "/dashboard/manage",
+			url: "/manage",
 			icon: UsersIcon,
 		},
 	],
@@ -122,7 +122,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 							asChild
 							className="data-[slot=sidebar-menu-button]:!p-1.5"
 						>
-							<Link href="/dashboard" className="p-0">
+							<Link href="/" className="p-0">
 								<Image src="/vortex.png" width={40} height={40} alt="logo" />
 								<span className="text-base font-semibold">VortexCoreAI</span>
 							</Link>
