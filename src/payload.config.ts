@@ -1,7 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { sqliteAdapter } from "@payloadcms/db-sqlite";
-// import { postgresAdapter } from "@payloadcms/db-postgres";
+// import { sqliteAdapter } from "@payloadcms/db-sqlite";
+import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { buildConfig } from "payload";
 import { Attendance } from "./collections/Attendance";
@@ -27,17 +27,17 @@ export default buildConfig({
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
 
-  // db: postgresAdapter({
-  //   pool: {
-  //     connectionString: process.env.DATABASE_URI || "",
-  //   },
-  // }),
-
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URL || "sqlite:./data.db",
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URI || "",
     },
   }),
+
+  // db: sqliteAdapter({
+  //   client: {
+  //     url: process.env.DATABASE_URL || "sqlite:./data.db",
+  //   },
+  // }),
 
   plugins: [],
 });
