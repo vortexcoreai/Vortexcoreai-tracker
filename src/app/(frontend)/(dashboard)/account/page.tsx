@@ -1,13 +1,17 @@
 import { Edit, Star, Users } from "lucide-react";
 import Image from "next/image";
+import { api } from "@/apis/api";
 import { ThemeChanger } from "@/components/themeChanger";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/lib/apiFetch";
 
 export default async function Page() {
 	const data = await apiFetch("/api/users/me");
 	const user = data.user;
+
+	const test = await api('/api/users/me', 'GET');
+  console.log(test);
 
 	return (
 		<div className="min-h-screen bg-background">

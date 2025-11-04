@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { CustomTables } from "@/components/customTables";
 import { DynamicForm } from "@/components/dynamicForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/lib/apiFetch";
 import { authOptions } from "@/lib/auth";
 
 export default async function Page() {

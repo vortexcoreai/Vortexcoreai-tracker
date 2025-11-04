@@ -65,7 +65,7 @@ export default function Page() {
 							className="group relative overflow-hidden border border-border/50 rounded-2xl transition-all duration-300 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
 						>
 							{/* Gradient hover layer */}
-							<div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-background opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+							<div className="absolute inset-0 bg-linear-to-br from-primary/10 via-background to-background opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
 							{/* Card Content (z-10 to stay above gradient) */}
 							<div className="relative z-10 flex flex-col h-full">
@@ -85,7 +85,7 @@ export default function Page() {
 									</div>
 								</CardHeader>
 
-								<CardContent className="flex-grow">
+								<CardContent className="grow">
 									<p className="text-sm text-muted-foreground leading-relaxed">
 										{item.content}
 									</p>

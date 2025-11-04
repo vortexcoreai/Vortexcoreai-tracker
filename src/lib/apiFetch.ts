@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
-export async function apiDelete(path, options = {}) {
+export async function apiFetch(path, options = {}) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.token) {
@@ -16,17 +16,11 @@ export async function apiDelete(path, options = {}) {
       Authorization: `JWT ${session.user.token}`,
       "Content-Type": "application/json",
     },
-    method: "DELETE",
   });
 
   if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`API error ${res.status}: ${errorText}`);
+    throw new Error(`API error: ${res.status}`);
   }
 
-  try {
-    return await res.json();
-  } catch {
-    return null;
-  }
+  return res.json();
 }

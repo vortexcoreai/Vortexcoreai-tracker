@@ -1,6 +1,6 @@
 import { CustomDropdown } from "@/components/customDropdown";
 import { CustomTables } from "@/components/customTables";
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/lib/apiFetch";
 
 export default async function Page({ searchParams }) {
 	const resolvedParams = await searchParams;

@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 export function LoginForm({
 	className,
 	...props
-}: React.ComponentPropsWithoutRef<"form">) {
+}) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -66,15 +66,6 @@ export function LoginForm({
 					/>
 				</div>
 				<div className="grid gap-2">
-					<div className="flex items-center">
-						<Label htmlFor="password">Password</Label>
-						<a
-							href="#"
-							className="ml-auto text-sm underline-offset-4 hover:underline"
-						>
-							Forgot your password?
-						</a>
-					</div>
 					<Input
 						id="password"
 						type="password"

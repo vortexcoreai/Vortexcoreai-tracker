@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/lib/apiFetch";
 
 export default async function Page() {
   const data = await apiFetch("/api/users");

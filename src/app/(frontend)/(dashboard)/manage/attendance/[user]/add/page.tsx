@@ -11,7 +11,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/lib/apiFetch";
 import { authOptions } from "@/lib/auth";
 
 export default async function Page({ params }) {
