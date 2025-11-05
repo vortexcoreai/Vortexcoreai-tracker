@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import type * as React from "react";
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
 import {
@@ -112,7 +111,7 @@ const data = {
 	],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ ...props }) {
 	return (
 		<Sidebar collapsible="offcanvas" {...props}>
 			<SidebarHeader>

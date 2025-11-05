@@ -14,30 +14,30 @@ import { Users } from "./collections/Users";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 export default buildConfig({
-  admin: {
-    user: Users.slug,
-    importMap: {
-      baseDir: path.resolve(dirname),
-    },
-  },
-  collections: [Users, Attendance, Teams, Leaves, Departments, Designations],
-  editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || "",
-  typescript: {
-    outputFile: path.resolve(dirname, "payload-types.ts"),
-  },
+	admin: {
+		user: Users.slug,
+		importMap: {
+			baseDir: path.resolve(dirname),
+		},
+	},
+	collections: [Users, Attendance, Teams, Leaves, Departments, Designations],
+	editor: lexicalEditor(),
+	secret: process.env.PAYLOAD_SECRET || "",
+	typescript: {
+		outputFile: path.resolve(dirname, "payload-types.ts"),
+	},
 
-  db: postgresAdapter({
-    pool: {
-      connectionString: process.env.DATABASE_URI || "",
-    },
-  }),
+	db: postgresAdapter({
+		pool: {
+			connectionString: process.env.DATABASE_URI || "",
+		},
+	}),
 
-  // db: sqliteAdapter({
-  //   client: {
-  //     url: process.env.DATABASE_URL || "sqlite:./data.db",
-  //   },
-  // }),
+	// db: sqliteAdapter({
+	//   client: {
+	//     url: process.env.DATABASE_URL || "sqlite:./data.db",
+	//   },
+	// }),
 
-  plugins: [],
+	plugins: [],
 });

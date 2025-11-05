@@ -8,10 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-export function LoginForm({
-	className,
-	...props
-}) {
+export function LoginForm({ className, ...props }) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -59,7 +56,7 @@ export function LoginForm({
 					<Input
 						id="email"
 						type="email"
-						placeholder="m@example.com"
+						placeholder="cat@vortexcoreai.com"
 						required
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
@@ -69,6 +66,7 @@ export function LoginForm({
 					<Input
 						id="password"
 						type="password"
+						placeholder="password"
 						required
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
