@@ -95,6 +95,18 @@ export const Attendance: CollectionConfig = {
 			},
 		},
 		{
+			name: "isRunning",
+			type: "checkbox",
+			defaultValue: false,
+			required: true,
+		},
+		{
+			name: "isBreakRunning",
+			type: "checkbox",
+			defaultValue: false,
+			required: true,
+			},
+		{
 			name: "dwr",
 			type: "textarea",
 			required: false,

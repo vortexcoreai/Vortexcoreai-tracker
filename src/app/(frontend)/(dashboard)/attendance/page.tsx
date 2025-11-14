@@ -41,6 +41,7 @@ export default async function Page({ searchParams }) {
 	];
 
 	const header = [
+		"Name",
 		"Date",
 		"Clock In",
 		"Clock Out",
@@ -51,6 +52,7 @@ export default async function Page({ searchParams }) {
 	];
 
 	const tableData = attendance.map((item) => ({
+		name: { value: item.user.firstName || "-"},
 		date: { value: item.date || "-", type: "date-format" },
 		clockIn: { value: item.clockIn || "-", type: "time-format" },
 		clockOut: { value: item.clockOut || "-", type: "time-format" },

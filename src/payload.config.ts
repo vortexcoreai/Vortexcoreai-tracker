@@ -9,6 +9,7 @@ import { Departments } from "./collections/departments";
 import { Designations } from "./collections/designations";
 import { Leaves } from "./collections/Leaves";
 import { Teams } from "./collections/Teams";
+import { Tickets } from "./collections/Tickets";
 import { Users } from "./collections/Users";
 
 const filename = fileURLToPath(import.meta.url);
@@ -20,7 +21,7 @@ export default buildConfig({
 			baseDir: path.resolve(dirname),
 		},
 	},
-	collections: [Users, Attendance, Teams, Leaves, Departments, Designations],
+	collections: [Users, Attendance, Teams, Leaves, Departments, Designations, Tickets],
 	editor: lexicalEditor(),
 	secret: process.env.PAYLOAD_SECRET || "",
 	typescript: {
