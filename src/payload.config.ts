@@ -20,6 +20,11 @@ export default buildConfig({
 		importMap: {
 			baseDir: path.resolve(dirname),
 		},
+		access: ({ req }) => {
+			const user = req.user;
+			if (!user) return false;
+			return user.role === "admin";
+    	},
 	},
 	collections: [Users, Attendance, Teams, Leaves, Departments, Designations, Tickets],
 	editor: lexicalEditor(),

@@ -15,10 +15,12 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { apiPost } from "@/lib/apiPost";
 import { Label } from "./ui/label";
+import { redirect } from "next/navigation";
 
 export function DynamicEditForm({
 	endpoint,
 	fields,
+	redirectUrl,
 	values = {},
 	extraData = {},
 	onSuccess,
@@ -42,7 +44,10 @@ export function DynamicEditForm({
 	const mutation = useMutation({
 		mutationFn: (data) =>
 			apiPost(endpoint, { ...data, ...extraData }, {}, "PATCH"),
-		onSuccess,
+		onSuccess: () => {
+			alert("Updated successfully!"); // ✅ SUCCESS ALERT
+			onSuccess && onSuccess();
+	},
 		onError: (err) => console.error("Failed to update form", err),
 	});
 
@@ -89,6 +94,8 @@ export function DynamicEditForm({
 
 		mutation.mutate(formattedData);
 	};
+
+	console.log("Loading:", mutation.isLoading);
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">

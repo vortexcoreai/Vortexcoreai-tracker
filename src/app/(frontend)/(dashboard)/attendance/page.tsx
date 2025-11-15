@@ -15,6 +15,7 @@ export default async function Page({ searchParams }) {
 	const data = await apiFetch(
 		`/api/attendance?where[date][greater_than_equal]=${startDate}&where[date][less_than_equal]=${lastDate}&limit=100&sort=date`,
 	);
+	console.log(`/api/attendance?where[date][greater_than_equal]=${startDate}&where[date][less_than_equal]=${lastDate}&limit=100&sort=date`)
 
 	const attendance = data.docs;
 
